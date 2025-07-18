@@ -6,11 +6,14 @@ fn main() {
     // Get the output directory for the build.
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
 
-    // Define the path to our Zig source file.
-    let zig_file = "src/generator.zig";
+    // *** UPDATED: Point to the new location of the Zig source file. ***
+    let zig_file = "src/generator/generator.zig";
+    let zig_dir = "src/generator/";
 
-    // Tell Cargo to re-run this script if the Zig file changes.
+    // Tell Cargo to re-run this script if the Zig file or directory changes.
     println!("cargo:rerun-if-changed={}", zig_file);
+    println!("cargo:rerun-if-changed={}", zig_dir);
+
 
     // Use the `zig build-lib` command to compile our Zig code into a static library.
     let status = Command::new("zig")
@@ -20,7 +23,6 @@ fn main() {
         .arg("-fno-stack-protector") // Keep this for good measure
         .arg(zig_file)
         .arg(format!("-femit-bin={}/libgenerator.a", out_dir.display()))
-        // *** THE FIX: Change the optimization mode to one better suited for FFI. ***
         .arg("-O")
         .arg("ReleaseSmall") // This mode is less aggressive and better for libraries.
         .status()
