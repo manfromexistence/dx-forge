@@ -13,12 +13,14 @@ fn main() {
     println!("cargo:rerun-if-changed={}", zig_file);
 
     // Use the `zig build-lib` command to compile our Zig code into a static library.
-    // We place the output library in the build script's output directory.
     let status = Command::new("zig")
         .arg("build-lib")
+        // Create Position-Independent Code for compatibility with Rust's default build.
+        .arg("-fPIE")
+        // *** THE FIX: Disable stack protection to resolve '__zig_probe_stack' error ***
+        .arg("-fno-stack-protector")
         .arg(zig_file)
         .arg(format!("-femit-bin={}/libgenerator.a", out_dir.display()))
-        // The '-fallow-shaking' flag has been removed for compatibility.
         .arg("-O") // Optimize for speed
         .arg("ReleaseSafe")
         .status()
