@@ -1,8 +1,23 @@
 [package]
-name = "rust"
+name = "dx-observer"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# The core file watching library. It provides a cross-platform API.
+notify = "6.1.1"
+
+# An asynchronous runtime for writing reliable, network-agnostic applications.
+# We use the "full" feature flag to enable all tokio features, including mpsc channels.
+tokio = { version = "1", features = ["full"] }
+
+# Crate for ergonomic error handling. It's great for application-level errors.
+anyhow = "1.0.86"
+
+# A library for deriving the Error trait, useful for library-level errors.
+thiserror = "1.0.61"
+
+# Provides core traits and types for working with asynchronous tasks.
+futures = "0.3.30"

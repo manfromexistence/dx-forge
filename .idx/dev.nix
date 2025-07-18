@@ -8,6 +8,8 @@
     pkgs.zig
     pkgs.cargo
     pkgs.busybox
+    pkgs.sudo
+    pkgs.gcc
   ];
   # Sets environment variables in the workspace
   env = {};
