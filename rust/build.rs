@@ -18,7 +18,7 @@ fn main() {
         .arg("build-lib")
         .arg(zig_file)
         .arg(format!("-femit-bin={}/libgenerator.a", out_dir.display()))
-        .arg("-fallow-shaking") // Allow unused symbols to be removed
+        // The '-fallow-shaking' flag has been removed for compatibility.
         .arg("-O") // Optimize for speed
         .arg("ReleaseSafe")
         .status()
