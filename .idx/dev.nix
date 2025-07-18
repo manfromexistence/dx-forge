@@ -7,6 +7,7 @@
   packages = [
     pkgs.zig
     pkgs.cargo
+    pkgs.busybox
   ];
   # Sets environment variables in the workspace
   env = {};
