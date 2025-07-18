@@ -49,7 +49,7 @@ async fn main() -> anyhow::Result<()> {
     watcher.watch(Path::new(path_to_watch), RecursiveMode::Recursive)?;
 
     println!("DX Observer: Watcher is active. Waiting for file changes...");
-    println!("(Try creating, modifying, or deleting a file in this directory)");
+    println!("(Try creating, modifying, or deleting a .tsx file)");
 
     // --- Event Processing Loop ---
     // This loop will run forever, waiting for events to arrive on the channel's
@@ -58,19 +58,29 @@ async fn main() -> anyhow::Result<()> {
         // We only care about events that indicate a change to the content.
         // We can ignore metadata-only changes for now.
         if !event.kind.is_access() && !event.kind.is_other() {
-             println!("\n[EVENT DETECTED] >> {:?}", event.kind);
-             for path in event.paths {
-                 println!("  -> Path: {}", path.display());
+            // Filter the paths to only include those with a .tsx extension.
+            let tsx_paths: Vec<_> = event
+                .paths
+                .into_iter()
+                .filter(|path| path.extension().map_or(false, |ext| ext == "tsx"))
+                .collect();
 
-                 // ==========================================================
-                 //  !!! STAGE 2: CALL THE ZIG GENERATOR !!!
-                 //  This is where we will use FFI to call our super-fast
-                 //  Zig code to process the changed file.
-                 //
-                 //  For now, we'll just print a placeholder message.
-                 // ==========================================================
-                 println!("  -> ACTION: Queued for processing by Zig generator.");
-             }
+            // Only proceed if we found at least one .tsx file in the event.
+            if !tsx_paths.is_empty() {
+                println!("\n[TSX EVENT DETECTED] >> {:?}", event.kind);
+                for path in tsx_paths {
+                    println!("  -> Path: {}", path.display());
+
+                    // ==========================================================
+                    //  !!! STAGE 2: CALL THE ZIG GENERATOR !!!
+                    //  This is where we will use FFI to call our super-fast
+                    //  Zig code to process the changed file.
+                    //
+                    //  For now, we'll just print a placeholder message.
+                    // ==========================================================
+                    println!("  -> ACTION: Queued for processing by Zig generator.");
+                }
+            }
         }
     }
 
