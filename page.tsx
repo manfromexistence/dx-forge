@@ -6,6 +6,7 @@ const MyComponent = () => {
       <h1>Hello from DX!</h1>
       <Dx.ArrowRight />
       <Dx.Arrowleft />
+      <Dx.Cancel />
     </div>
   );
 };

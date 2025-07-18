@@ -1,4 +1,4 @@
-# Creating dx
+# dx
 https://github.com/manfromexistence/dx-forge.git
 
 ```
