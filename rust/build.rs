@@ -17,12 +17,12 @@ fn main() {
         .arg("build-lib")
         // Create Position-Independent Code for compatibility with Rust's default build.
         .arg("-fPIE")
-        // *** THE FIX: Disable stack protection to resolve '__zig_probe_stack' error ***
-        .arg("-fno-stack-protector")
+        .arg("-fno-stack-protector") // Keep this for good measure
         .arg(zig_file)
         .arg(format!("-femit-bin={}/libgenerator.a", out_dir.display()))
-        .arg("-O") // Optimize for speed
-        .arg("ReleaseSafe")
+        // *** THE FIX: Change the optimization mode to one better suited for FFI. ***
+        .arg("-O")
+        .arg("ReleaseSmall") // This mode is less aggressive and better for libraries.
         .status()
         .expect("Failed to execute Zig build command");
 
