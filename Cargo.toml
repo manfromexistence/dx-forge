@@ -19,17 +19,17 @@ rust-version = "1.66.0"
 # path = "src/lib.rs"
 # doctest = true
 
-# [features]
-# default = ["macros", "crossterm", "one-liners", "fuzzy"]
-# macros = []
-# one-liners = []
+[features]
+default = ["macros", "crossterm", "one-liners", "fuzzy"]
+macros = []
+one-liners = []
 # date = ["chrono"]
 # editor = ["tempfile"]
-# fuzzy = ["fuzzy-matcher"]
+fuzzy = ["fuzzy-matcher"]
 
-# [package.metadata.docs.rs]
-# all-features = true
-# rustdoc-args = ["--cfg", "docsrs"]
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
 notify = "8.1.0"

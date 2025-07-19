@@ -2,7 +2,7 @@
 #![deny(unused_crate_dependencies)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::bool_to_int_with_if)]
-#[cfg(feature = "date")]
+// #[cfg(feature = "date")]
 mod ansi;
 mod config;
 mod date_utils;
