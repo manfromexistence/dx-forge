@@ -11,7 +11,7 @@
 <p align="center">
   <img width="460" src="../assets/dx.png">
   <br>
-  <code>dx</code> is a library for building interactive prompts on terminals.
+  <code>dx</code> is a library for enhancing development experience!.
 </p>
 
 It provides several different prompts in order to interactively ask the user for information via the CLI. With `dx`, you can use:

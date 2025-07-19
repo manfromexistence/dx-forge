@@ -12,6 +12,7 @@
       "pkief.material-icon-theme"
       "ziglang.vscode-zig"
       "rust-lang.rust"
+      "tamasfe.even-better-toml"
     ];
     workspace = {
       onCreate = {
