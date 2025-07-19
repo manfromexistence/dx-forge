@@ -1,20 +1,16 @@
-//! # Observer Module
-//!
-//! This module contains the core file-watching logic for the `dx` tool.
-//! It uses the `notify` crate to listen for file system events asynchronously
-//! and dispatches them for processing by the generator.
-
 use crate::{chronicle, generator};
 use notify::{Config, Event, RecommendedWatcher, RecursiveMode, Watcher};
 use std::path::Path;
 use tokio::sync::mpsc;
 
-/// Starts the asynchronous file observer.
 pub async fn start(mut chronicle_repo: gix::Repository) -> anyhow::Result<()> {
     println!("DX Observer: Initializing...");
 
     let path_to_watch = ".";
-    println!("DX Observer: Watching directory -> {}", Path::new(path_to_watch).canonicalize()?.display());
+    println!(
+        "DX Observer: Watching directory -> {}",
+        Path::new(path_to_watch).canonicalize()?.display()
+    );
 
     let (tx, mut rx) = mpsc::channel(100);
 
@@ -52,13 +48,15 @@ pub async fn start(mut chronicle_repo: gix::Repository) -> anyhow::Result<()> {
 
                         if generated {
                             println!("  -> ACTION: Zig generator successfully created a new component.");
-                            // *** NEW: Commit the generated file to the Chronicle ***
-                            // For now, we assume all new files are "green".
-                            if let Err(e) = chronicle::commit_file(&mut chronicle_repo, &path, "green") {
+                            if let Err(e) =
+                                chronicle::record_change(&mut chronicle_repo, &path, "green")
+                            {
                                 eprintln!("  -> CHRONICLE ERROR: Failed to commit change: {}", e);
                             }
                         } else {
-                            println!("  -> INFO: No <Dx.*> component found to generate in this change.");
+                            println!(
+                                "  -> INFO: No <Dx.*> component found to generate in this change."
+                            );
                         }
                     }
                 }
