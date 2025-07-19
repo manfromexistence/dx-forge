@@ -3,20 +3,20 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::bool_to_int_with_if)]
 mod ansi;
-pub mod autocompletion;
 mod config;
-#[cfg(feature = "date")]
 mod date_utils;
-pub mod error;
-pub mod formatter;
 mod input;
-pub mod list_option;
-pub mod parser;
+pub mod autocompletion;
 mod prompts;
 mod terminal;
+mod utils;
+#[cfg(feature = "date")]
+pub mod error;
+pub mod formatter;
+pub mod list_option;
+pub mod parser;
 pub mod type_aliases;
 pub mod ui;
-mod utils;
 pub mod validator;
 
 pub use crate::autocompletion::Autocomplete;
