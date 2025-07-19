@@ -1,11 +1,11 @@
-use inquire::Text;
+use crate::cli::propmts::Text;
 
 fn main() {
-    let name = Text::new("What is your name?").prompt();
+    let name = Text::new("What command you want to run?").prompt();
 
     match name {
-        Ok(name) => println!("Hello {name}"),
-        Err(_) => println!("An error happened when asking for your name, try again later."),
+        Ok(name) => println!("Command [{name}] is still in developement - it is coming soon..."),
+        Err(_) => println!("An error happened when running this command, try again later."),
     }
 }
 
