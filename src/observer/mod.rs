@@ -1,9 +1,10 @@
 use crate::{chronicle, generator};
-use notify::{Config, Event, RecommendedWatcher, RecursiveMode, Watcher};
+use anyhow::Result;
+use notify::{RecursiveMode, Watcher};
 use std::path::Path;
 use tokio::sync::mpsc;
 
-pub async fn start(mut chronicle_repo: gix::Repository) -> anyhow::Result<()> {
+pub async fn start(mut chronicle_repo: gix::Repository) -> Result<()> {
     println!("DX Observer: Initializing...");
 
     let path_to_watch = ".";
@@ -12,18 +13,15 @@ pub async fn start(mut chronicle_repo: gix::Repository) -> anyhow::Result<()> {
         Path::new(path_to_watch).canonicalize()?.display()
     );
 
-    let (tx, mut rx) = mpsc::channel(100);
+    let (tx, mut rx) = mpsc::unbounded_channel();
 
-    let mut watcher = RecommendedWatcher::new(
-        move |res: Result<Event, notify::Error>| {
-            if let Ok(event) = res {
-                if tx.try_send(event).is_err() {
-                    eprintln!("Warning: Channel is full, event dropped.");
-                }
+    let mut watcher = notify::recommended_watcher(move |res: notify::Result<notify::Event>| {
+        if let Ok(event) = res {
+            if tx.send(event).is_err() {
+                eprintln!("Warning: Channel receiver has been dropped, cannot send event.");
             }
-        },
-        Config::default(),
-    )?;
+        }
+    })?;
 
     watcher.watch(Path::new(path_to_watch), RecursiveMode::Recursive)?;
 

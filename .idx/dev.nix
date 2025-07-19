@@ -20,8 +20,7 @@
       # "vscodevim.vim"
       "pkief.material-icon-theme"
       "ziglang.vscode-zig"
-      # It's good practice to add the official Rust extension
-      "rust-lang.rust-analyzer"
+      "rust-lang.rust"
     ];
     workspace = {
       # Runs when a workspace is first created with this `dev.nix` file
