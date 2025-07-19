@@ -36,11 +36,11 @@
 //!   ID: 1 | Forged: /path/to/FirstComponent.tsx
 //! ```
 //!
-//! ## `dx chronicle revert <branch> <id>`
+//! ## `dx revert <branch> <id>`
 //! Reverts the user's codebase to the state before a specific change was made.
 //!
 //! ### Usage Example:
-//! `dx chronicle revert green 2`
+//! `dx revert green 2`
 //!
 //! ### Action:
 //! 1. Finds the change associated with the ID on the specified branch.
