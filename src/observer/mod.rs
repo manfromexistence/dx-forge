@@ -4,17 +4,13 @@
 //! It uses the `notify` crate to listen for file system events asynchronously
 //! and dispatches them for processing by the generator.
 
-use crate::generator; // Use our new, safe generator module
+use crate::{chronicle, generator};
 use notify::{Config, Event, RecommendedWatcher, RecursiveMode, Watcher};
 use std::path::Path;
 use tokio::sync::mpsc;
 
 /// Starts the asynchronous file observer.
-///
-/// This function sets up a file watcher for the current directory and listens
-/// for changes to `.tsx` files. When a change is detected, it calls the
-/// generator module to process the file.
-pub async fn start() -> anyhow::Result<()> {
+pub async fn start(mut chronicle_repo: gix::Repository) -> anyhow::Result<()> {
     println!("DX Observer: Initializing...");
 
     let path_to_watch = ".";
@@ -52,11 +48,15 @@ pub async fn start() -> anyhow::Result<()> {
                     println!("  -> Path: {}", path.display());
 
                     if let Some(path_str) = path.to_str() {
-                        // Call the safe wrapper in our generator module.
                         let generated = generator::process_file(path_str);
 
                         if generated {
                             println!("  -> ACTION: Zig generator successfully created a new component.");
+                            // *** NEW: Commit the generated file to the Chronicle ***
+                            // For now, we assume all new files are "green".
+                            if let Err(e) = chronicle::commit_file(&mut chronicle_repo, &path, "green") {
+                                eprintln!("  -> CHRONICLE ERROR: Failed to commit change: {}", e);
+                            }
                         } else {
                             println!("  -> INFO: No <Dx.*> component found to generate in this change.");
                         }

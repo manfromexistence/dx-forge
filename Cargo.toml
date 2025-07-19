@@ -10,14 +10,21 @@ edition = "2021"
 notify = "6.1.1"
 
 # An asynchronous runtime for writing reliable, network-agnostic applications.
-# We use the "full" feature flag to enable all tokio features, including mpsc channels.
 tokio = { version = "1", features = ["full"] }
 
-# Crate for ergonomic error handling. It's great for application-level errors.
+# Crate for ergonomic error handling.
 anyhow = "1.0.86"
 
-# A library for deriving the Error trait, useful for library-level errors.
+# A library for deriving the Error trait.
 thiserror = "1.0.61"
 
 # Provides core traits and types for working with asynchronous tasks.
 futures = "0.3.30"
+
+# A pure-Rust Git implementation. This is the engine for our Chronicle.
+# We enable only the 'index' component feature as per the official documentation.
+# The init, discover, and actor functionalities are available through the base crate.
+gix = { version = "0.62.0", default-features = false, features = ["index"] }
+
+# A library for handling dates and times, used for our human-readable commit messages.
+chrono = "0.4.38"
