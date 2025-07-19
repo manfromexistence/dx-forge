@@ -9,7 +9,6 @@ const MyComponent = () => {
       <Dx.Cancel />
       <Dx.Moon />
 
-      
     </div>
   );
 };
