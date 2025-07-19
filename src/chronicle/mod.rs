@@ -107,7 +107,7 @@ pub fn record_change(repo: &mut gix::Repository, file_path: &Path, branch_name: 
                 entries: tree_ref.entries.into_iter().map(|e| gix::objs::tree::Entry {
                     mode: e.mode,
                     filename: e.filename.to_owned(),
-                    oid: e.oid,
+                    oid: e.oid.into(),
                 }).collect(),
             }
         }
@@ -188,8 +188,12 @@ fn get_daily_commit_count(repo: &gix::Repository, head: Option<gix::hash::Object
 
     for commit_info in head.ancestors(repo) {
         let commit_info = commit_info?;
-        let commit = repo.find_object(commit_info.id)?.try_into_commit()?;
-        let time = commit.committer.time.seconds;
+        let commit_object = repo.find_object(commit_info.id)?.try_into_commit()?;
+        
+        let commit_data = commit_object.decode()?;
+        // FINAL FIX: `committer` is a method, so it must be called with `()`.
+        let time = commit_data.committer().time()?.seconds;
+
         if time < today_start {
             break;
         }
@@ -199,4 +203,12 @@ fn get_daily_commit_count(repo: &gix::Repository, head: Option<gix::hash::Object
 }
 
 /// Counts the total number of commits on a branch to create the next sequential ID.
-fn get_sequential_commit_count(repo: &gix::Repository, head: Option<gix::hash::ObjectId>) -> Result<u32
+fn get_sequential_commit_count(repo: &gix::Repository, head: Option<gix::hash::ObjectId>) -> Result<u32> {
+    let Some(head) = head else { return Ok(0) };
+    let mut count = 0;
+    for commit_info in head.ancestors(repo) {
+        let _ = commit_info?; // handle error
+        count += 1;
+    }
+    Ok(count)
+}
