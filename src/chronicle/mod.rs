@@ -10,7 +10,7 @@ use gix::actor::Signature;
 use std::path::Path;
 
 // The name of the directory where our sandboxed git lives.
-const CHRONICLE_DIR: &str = ".dx/chronicle";
+const CHRONICLE_DIR: &str = ".dx";
 
 /// Ensures the Chronicle repository exists, initializing it if necessary.
 pub fn initialize() -> Result<gix::Repository> {
