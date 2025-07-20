@@ -2,7 +2,6 @@ mod action;
 #[cfg(test)]
 mod test;
 
-pub use action::*;
 
 use crate::cli::{
     config::get_configuration,

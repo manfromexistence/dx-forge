@@ -21,7 +21,6 @@ pub mod ui;
 pub mod validator;
 
 pub use self::autocompletion::Autocomplete;
-pub use self::config::set_global_render_config;
 pub use self::error::{CustomUserError, InquireError};
 pub use self::input::action::*;
 pub use self::prompts::*;

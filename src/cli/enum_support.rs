@@ -1,10 +1,4 @@
-use std::str::FromStr;
 
-use crate::cli::{
-    error::InquireResult,
-    // list_option::{FromListOption, ListOption},
-    list_option::{ListOption},
-};
 
 pub trait InquireEnumVariants {
     fn get_variants() -> &'static [&'static str];

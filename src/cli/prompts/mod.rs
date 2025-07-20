@@ -22,8 +22,6 @@ pub use custom_type::*;
 // #[cfg(feature = "editor")]
 // pub use editor::*;
 pub use multiselect::*;
-#[cfg(feature = "one-liners")]
-pub use one_liners::*;
 // pub use password::*;
 pub use select::*;
 pub use text::*;

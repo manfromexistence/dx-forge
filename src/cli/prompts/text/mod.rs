@@ -5,7 +5,6 @@ mod prompt;
 #[cfg(feature = "crossterm")]
 mod test;
 
-pub use action::*;
 
 use crate::cli::{
     autocompletion::Autocomplete,
