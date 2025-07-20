@@ -1,5 +1,4 @@
-mod cli;
-use crate::cli::propmts::text::Text;
+use dx::Text;
 
 fn main() {
     let name = Text::new("What command you want to run?").prompt();
