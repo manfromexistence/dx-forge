@@ -4,7 +4,7 @@ mod test;
 
 pub use action::*;
 
-use crate::{
+use crate::cli::{
     config::get_configuration,
     error::{InquireError, InquireResult},
     formatter::{BoolFormatter, DEFAULT_BOOL_FORMATTER},
@@ -57,7 +57,7 @@ use crate::{
 /// }
 /// ```
 ///
-/// [`Confirm`]: crate::Confirm
+/// [`Confirm`]: crate::cli::Confirm
 #[derive(Clone)]
 pub struct Confirm<'a> {
     /// Message to be presented to the user.
@@ -103,7 +103,7 @@ pub struct Confirm<'a> {
 }
 
 impl<'a> Confirm<'a> {
-    /// Default formatter, set to [DEFAULT_BOOL_FORMATTER](crate::formatter::DEFAULT_BOOL_FORMATTER)
+    /// Default formatter, set to [DEFAULT_BOOL_FORMATTER](crate::cli::formatter::DEFAULT_BOOL_FORMATTER)
     pub const DEFAULT_FORMATTER: BoolFormatter<'a> = DEFAULT_BOOL_FORMATTER;
 
     /// Default input parser.

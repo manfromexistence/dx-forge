@@ -1,6 +1,6 @@
 use super::Text;
-use crate::ui::{Key, KeyModifiers};
-use crate::validator::{ErrorMessage, Validation};
+use crate::cli::ui::{Key, KeyModifiers};
+use crate::cli::validator::{ErrorMessage, Validation};
 
 fn default<'a>() -> Text<'a> {
     Text::new("Question?")
@@ -23,7 +23,7 @@ macro_rules! text_test {
     ($name:ident,$input:expr,$output:expr,$prompt:expr) => {
         #[test]
         fn $name() {
-            let mut backend = crate::prompts::test::fake_backend($input);
+            let mut backend = crate::cli::prompts::test::fake_backend($input);
 
             let ans = $prompt.prompt_with_backend(&mut backend).unwrap();
 

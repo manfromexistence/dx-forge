@@ -1,7 +1,7 @@
 use unicode_segmentation::UnicodeSegmentation;
 
 use super::Input;
-use crate::{
+use crate::cli::{
     input::{InputActionResult, LineDirection, Magnitude},
     InputAction,
 };

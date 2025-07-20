@@ -13,7 +13,7 @@ use termion::{
     terminal_size,
 };
 
-use crate::{
+use crate::cli::{
     error::InquireResult,
     ui::{Attributes, InputReader, Styled},
 };
@@ -41,7 +41,7 @@ impl TermionKeyReader {
 }
 
 impl InputReader for TermionKeyReader {
-    fn read_key(&mut self) -> InquireResult<crate::ui::Key> {
+    fn read_key(&mut self) -> InquireResult<crate::cli::ui::Key> {
         loop {
             if let Some(key) = self.keys.next() {
                 let key = key?;
@@ -99,7 +99,7 @@ impl<'a> TermionTerminal<'a> {
         write!(self.get_writer(), "{}", termion::style::Reset)
     }
 
-    fn set_fg_color(&mut self, color: crate::ui::Color) -> Result<()> {
+    fn set_fg_color(&mut self, color: crate::cli::ui::Color) -> Result<()> {
         write!(self.get_writer(), "{}", color::Fg(color))
     }
 
@@ -107,7 +107,7 @@ impl<'a> TermionTerminal<'a> {
         write!(self.get_writer(), "{}", color::Fg(color::Reset))
     }
 
-    fn set_bg_color(&mut self, color: crate::ui::Color) -> Result<()> {
+    fn set_bg_color(&mut self, color: crate::cli::ui::Color) -> Result<()> {
         write!(self.get_writer(), "{}", color::Bg(color))
     }
 
@@ -212,7 +212,7 @@ impl<'a> Drop for TermionTerminal<'a> {
 
 macro_rules! into_termion_color {
     ($self:expr, $fn_name:ident, $f:expr) => {{
-        use $crate::ui::Color as C;
+        use $crate::cli::ui::Color as C;
         match $self {
             C::Black => color::Black.$fn_name($f),
             C::LightRed => color::LightRed.$fn_name($f),
@@ -236,7 +236,7 @@ macro_rules! into_termion_color {
     }};
 }
 
-impl Color for crate::ui::Color {
+impl Color for crate::cli::ui::Color {
     fn write_fg(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         into_termion_color!(self, write_fg, f)
     }
@@ -246,9 +246,9 @@ impl Color for crate::ui::Color {
     }
 }
 
-impl From<Key> for crate::ui::Key {
+impl From<Key> for crate::cli::ui::Key {
     fn from(key: Key) -> Self {
-        use crate::ui::KeyModifiers;
+        use crate::cli::ui::KeyModifiers;
 
         match key {
             Key::Esc => Self::Escape,
@@ -275,8 +275,8 @@ impl From<Key> for crate::ui::Key {
 
 #[cfg(test)]
 mod test {
-    use crate::terminal::Terminal;
-    use crate::ui::Color;
+    use crate::cli::terminal::Terminal;
+    use crate::cli::ui::Color;
 
     use super::Attributes;
     use super::TermionTerminal;

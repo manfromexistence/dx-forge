@@ -1,4 +1,4 @@
-use crate::{
+use crate::cli::{
     error::InquireResult,
     formatter::CustomTypeFormatter,
     input::Input,

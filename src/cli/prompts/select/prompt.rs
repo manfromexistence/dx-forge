@@ -1,6 +1,6 @@
 use std::{cmp::Reverse, fmt::Display};
 
-use crate::{
+use crate::cli::{
     error::InquireResult,
     formatter::OptionFormatter,
     input::{Input, InputActionResult},

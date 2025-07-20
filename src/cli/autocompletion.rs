@@ -13,7 +13,7 @@
 
 use dyn_clone::DynClone;
 
-use crate::CustomUserError;
+use crate::cli::CustomUserError;
 
 /// Used when an autocompletion is triggered for the user's text input.
 ///

@@ -1,6 +1,6 @@
 //! Definitions of common behavior shared amongst all different prompt types.
 
-use crate::{error::InquireResult, input::InputActionResult, ui::CommonBackend, InquireError};
+use crate::cli::{error::InquireResult, input::InputActionResult, ui::CommonBackend, InquireError};
 
 use super::action::{Action, InnerAction};
 

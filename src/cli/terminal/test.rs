@@ -1,6 +1,6 @@
 use std::{collections::VecDeque, fmt::Display};
 
-use crate::ui::{Key, Styled};
+use crate::cli::ui::{Key, Styled};
 
 use super::{Terminal, TerminalSize};
 

@@ -1,4 +1,4 @@
-use crate::{error::InquireResult, Confirm, CustomType, Password, Text};
+use crate::cli::{error::InquireResult, Confirm, CustomType, Password, Text};
 
 /// This function is a helpful one-liner to prompt the user for the confirmation of an action.
 ///
@@ -142,7 +142,7 @@ pub fn prompt_date<M>(message: M) -> InquireResult<chrono::NaiveDate>
 where
     M: AsRef<str>,
 {
-    crate::DateSelect::new(message.as_ref()).prompt()
+    crate::cli::DateSelect::new(message.as_ref()).prompt()
 }
 
 /// This function is a helpful one-liner to prompt the user for a number and parse it to f64.

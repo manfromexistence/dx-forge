@@ -1,5 +1,5 @@
-//! Utilities used to wrap user selections in [Select](crate::Select) and
-//! [`MultiSelect`](crate::MultiSelect) prompts.
+//! Utilities used to wrap user selections in [Select](crate::cli::Select) and
+//! [`MultiSelect`](crate::cli::MultiSelect) prompts.
 
 use std::fmt;
 

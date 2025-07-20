@@ -1,4 +1,4 @@
-use crate::error::InquireResult;
+use crate::cli::error::InquireResult;
 
 use super::Key;
 

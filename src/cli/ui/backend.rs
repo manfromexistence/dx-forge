@@ -2,7 +2,7 @@ use std::{collections::BTreeSet, fmt::Display, io::Result};
 
 use unicode_width::UnicodeWidthStr;
 
-use crate::{
+use crate::cli::{
     error::InquireResult,
     input::Input,
     list_option::ListOption,
@@ -459,7 +459,7 @@ pub mod date {
 
     use chrono::{Datelike, Duration};
 
-    use crate::{
+    use crate::cli::{
         date_utils::get_start_date,
         terminal::Terminal,
         ui::{InputReader, Styled},
@@ -571,7 +571,7 @@ pub mod date {
 
                     let cursor_offset = if date_it.day() < 10 { 1 } else { 0 };
 
-                    let mut style_sheet = crate::ui::StyleSheet::empty();
+                    let mut style_sheet = crate::cli::ui::StyleSheet::empty();
 
                     if date_it == selected_date {
                         self.frame_renderer.mark_cursor_position(cursor_offset);
@@ -668,7 +668,7 @@ pub(crate) mod test {
 
     use chrono::{Month, NaiveDate, Weekday};
 
-    use crate::{
+    use crate::cli::{
         input::Input,
         ui::{InputReader, Key},
         validator::ErrorMessage,
@@ -741,10 +741,10 @@ pub(crate) mod test {
     }
 
     impl InputReader for FakeBackend {
-        fn read_key(&mut self) -> crate::error::InquireResult<Key> {
+        fn read_key(&mut self) -> crate::cli::error::InquireResult<Key> {
             self.input
                 .pop_front()
-                .ok_or(crate::error::InquireError::IO(std::io::Error::new(
+                .ok_or(crate::cli::error::InquireError::IO(std::io::Error::new(
                     std::io::ErrorKind::UnexpectedEof,
                     "No more keys in input",
                 )))
@@ -795,7 +795,7 @@ pub(crate) mod test {
     }
 
     #[cfg(feature = "date")]
-    impl crate::ui::date::DateSelectBackend for FakeBackend {
+    impl crate::cli::ui::date::DateSelectBackend for FakeBackend {
         fn render_calendar_prompt(&mut self, prompt: &str) -> std::io::Result<()> {
             self.push_token(Token::Prompt(prompt.to_string()));
             Ok(())

@@ -100,7 +100,7 @@ impl<'a, T> Debug for Page<'a, T> {
 mod test {
     #![allow(clippy::bool_assert_comparison)]
 
-    use crate::{
+    use crate::cli::{
         list_option::ListOption,
         utils::{int_log10, paginate},
     };

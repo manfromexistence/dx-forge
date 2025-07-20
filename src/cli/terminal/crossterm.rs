@@ -9,7 +9,7 @@ use crossterm::{
     Command,
 };
 
-use crate::{
+use crate::cli::{
     error::InquireResult,
     ui::{Attributes, InputReader, Key, Styled},
 };
@@ -79,7 +79,7 @@ impl CrosstermTerminal {
         self.write_command(SetAttribute(Attribute::Reset))
     }
 
-    fn set_fg_color(&mut self, color: crate::ui::Color) -> Result<()> {
+    fn set_fg_color(&mut self, color: crate::cli::ui::Color) -> Result<()> {
         self.write_command(SetForegroundColor(color.into()))
     }
 
@@ -87,7 +87,7 @@ impl CrosstermTerminal {
         self.write_command(SetForegroundColor(Color::Reset))
     }
 
-    fn set_bg_color(&mut self, color: crate::ui::Color) -> Result<()> {
+    fn set_bg_color(&mut self, color: crate::cli::ui::Color) -> Result<()> {
         self.write_command(SetBackgroundColor(color.into()))
     }
 
@@ -194,9 +194,9 @@ impl Drop for CrosstermTerminal {
     }
 }
 
-impl From<crate::ui::Color> for Color {
-    fn from(c: crate::ui::Color) -> Self {
-        use crate::ui::Color as C;
+impl From<crate::cli::ui::Color> for Color {
+    fn from(c: crate::cli::ui::Color) -> Self {
+        use crate::cli::ui::Color as C;
         match c {
             C::Black => Color::Black,
             C::LightRed => Color::Red,
@@ -220,30 +220,30 @@ impl From<crate::ui::Color> for Color {
     }
 }
 
-impl From<KeyModifiers> for crate::ui::KeyModifiers {
+impl From<KeyModifiers> for crate::cli::ui::KeyModifiers {
     fn from(m: KeyModifiers) -> Self {
         let mut modifiers = Self::empty();
 
         if m.contains(KeyModifiers::NONE) {
-            modifiers |= crate::ui::KeyModifiers::NONE;
+            modifiers |= crate::cli::ui::KeyModifiers::NONE;
         }
         if m.contains(KeyModifiers::ALT) {
-            modifiers |= crate::ui::KeyModifiers::ALT;
+            modifiers |= crate::cli::ui::KeyModifiers::ALT;
         }
         if m.contains(KeyModifiers::CONTROL) {
-            modifiers |= crate::ui::KeyModifiers::CONTROL;
+            modifiers |= crate::cli::ui::KeyModifiers::CONTROL;
         }
         if m.contains(KeyModifiers::SHIFT) {
-            modifiers |= crate::ui::KeyModifiers::SHIFT;
+            modifiers |= crate::cli::ui::KeyModifiers::SHIFT;
         }
         if m.contains(KeyModifiers::SUPER) {
-            modifiers |= crate::ui::KeyModifiers::SUPER;
+            modifiers |= crate::cli::ui::KeyModifiers::SUPER;
         }
         if m.contains(KeyModifiers::HYPER) {
-            modifiers |= crate::ui::KeyModifiers::HYPER;
+            modifiers |= crate::cli::ui::KeyModifiers::HYPER;
         }
         if m.contains(KeyModifiers::META) {
-            modifiers |= crate::ui::KeyModifiers::META;
+            modifiers |= crate::cli::ui::KeyModifiers::META;
         }
 
         modifiers
@@ -323,8 +323,8 @@ impl From<KeyEvent> for Key {
 
 #[cfg(test)]
 mod test {
-    use crate::terminal::Terminal;
-    use crate::ui::Color;
+    use crate::cli::terminal::Terminal;
+    use crate::cli::ui::Color;
 
     use super::Attributes;
     use super::CrosstermTerminal;

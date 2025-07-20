@@ -1,6 +1,6 @@
 use std::{fmt::Display, io::Result};
 
-use crate::{
+use crate::cli::{
     error::InquireResult,
     ui::{dimension::Dimension, InputReader, Styled},
 };
@@ -78,7 +78,7 @@ pub fn get_default_terminal() -> InquireResult<(impl InputReader, impl Terminal)
         // this is here to silence an additional compilation error
         // when no terminals are enabled. it complains about mismatched
         // return types.
-        Err(crate::error::InquireError::InvalidConfiguration(
+        Err(crate::cli::error::InquireError::InvalidConfiguration(
             "Missing terminal backend".into(),
         ))
     }

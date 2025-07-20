@@ -14,14 +14,14 @@
 
 use dyn_clone::DynClone;
 
-use crate::{error::CustomUserError, list_option::ListOption};
+use crate::cli::{error::CustomUserError, list_option::ListOption};
 
 /// Error message that is displayed to the users when their input is considered not
 /// valid by registered validators.
 #[derive(Clone, Default, Debug, PartialEq, Eq)]
 pub enum ErrorMessage {
     /// No custom message is defined, a standard one defined in the set
-    /// [`RenderConfig`](crate::ui::RenderConfig) is used instead.
+    /// [`RenderConfig`](crate::cli::ui::RenderConfig) is used instead.
     #[default]
     Default,
 
@@ -53,8 +53,8 @@ pub enum Validation {
     Invalid(ErrorMessage),
 }
 
-/// Validator that receives a string slice as the input, such as [`Text`](crate::Text) and
-/// [`Password`](crate::Password).
+/// Validator that receives a string slice as the input, such as [`Text`](crate::cli::Text) and
+/// [`Password`](crate::cli::Password).
 ///
 /// If the input provided by the user is valid, your validator should return `Ok(Validation::Valid)`.
 ///
@@ -101,7 +101,7 @@ where
     }
 }
 
-/// Validator used in [`DateSelect`](crate::DateSelect) prompts.
+/// Validator used in [`DateSelect`](crate::cli::DateSelect) prompts.
 ///
 /// If the input provided by the user is valid, your validator should return `Ok(Validation::Valid)`.
 ///
@@ -153,7 +153,7 @@ where
     }
 }
 
-/// Validator used in [`MultiSelect`](crate::MultiSelect) prompts.
+/// Validator used in [`MultiSelect`](crate::cli::MultiSelect) prompts.
 ///
 /// If the input provided by the user is valid, your validator should return `Ok(Validation::Valid)`.
 ///
@@ -207,7 +207,7 @@ where
     }
 }
 
-/// Validator used in [`CustomType`](crate::CustomType) prompts.
+/// Validator used in [`CustomType`](crate::cli::CustomType) prompts.
 ///
 /// If the input provided by the user is valid, your validator should return `Ok(Validation::Valid)`.
 ///
@@ -365,11 +365,11 @@ impl StringValidator for ValueRequiredValidator {
 #[cfg(feature = "macros")]
 macro_rules! required {
     () => {
-        $crate::validator::ValueRequiredValidator::default()
+        $crate::cli::validator::ValueRequiredValidator::default()
     };
 
     ($message:expr) => {
-        $crate::validator::ValueRequiredValidator::new($message)
+        $crate::cli::validator::ValueRequiredValidator::new($message)
     };
 }
 
@@ -471,11 +471,11 @@ impl<T: ?Sized> MultiOptionValidator<T> for MaxLengthValidator {
 #[cfg(feature = "macros")]
 macro_rules! max_length {
     ($length:expr) => {
-        $crate::validator::MaxLengthValidator::new($length)
+        $crate::cli::validator::MaxLengthValidator::new($length)
     };
 
     ($length:expr, $message:expr) => {
-        $crate::max_length!($length).with_message($message)
+        $crate::cli::max_length!($length).with_message($message)
     };
 }
 
@@ -580,11 +580,11 @@ impl<T: ?Sized> MultiOptionValidator<T> for MinLengthValidator {
 #[cfg(feature = "macros")]
 macro_rules! min_length {
     ($length:expr) => {
-        $crate::validator::MinLengthValidator::new($length)
+        $crate::cli::validator::MinLengthValidator::new($length)
     };
 
     ($length:expr, $message:expr) => {
-        $crate::min_length!($length).with_message($message)
+        $crate::cli::min_length!($length).with_message($message)
     };
 }
 
@@ -686,17 +686,17 @@ impl<T: ?Sized> MultiOptionValidator<T> for ExactLengthValidator {
 #[cfg(feature = "macros")]
 macro_rules! length {
     ($length:expr) => {
-        $crate::validator::ExactLengthValidator::new($length)
+        $crate::cli::validator::ExactLengthValidator::new($length)
     };
 
     ($length:expr, $message:expr) => {
-        $crate::length!($length).with_message($message)
+        $crate::cli::length!($length).with_message($message)
     };
 }
 
 #[cfg(test)]
 mod validators_test {
-    use crate::{
+    use crate::cli::{
         error::CustomUserError,
         list_option::ListOption,
         validator::{

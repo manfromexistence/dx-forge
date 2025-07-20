@@ -2,7 +2,7 @@ use std::vec;
 
 use rstest::rstest;
 
-use crate::{
+use crate::cli::{
     error::InquireResult,
     ui::{
         test::{FakeBackend, Token},

@@ -1,4 +1,4 @@
-use crate::Select;
+use crate::cli::Select;
 
 /// Configuration settings used in the execution of a SelectPrompt.
 #[derive(Copy, Clone, Debug)]

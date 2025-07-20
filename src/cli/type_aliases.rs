@@ -1,6 +1,6 @@
 //! General type aliases.
 
-use crate::error::CustomUserError;
+use crate::cli::error::CustomUserError;
 
 /// Type alias to represent the function used to Score and filter options.
 ///

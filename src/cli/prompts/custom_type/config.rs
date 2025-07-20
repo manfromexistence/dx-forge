@@ -1,4 +1,4 @@
-use crate::CustomType;
+use crate::cli::CustomType;
 
 /// Configuration settings used in the execution of a CustomTypePrompt.
 pub struct CustomTypeConfig {}

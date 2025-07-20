@@ -1,4 +1,4 @@
-use crate::MultiSelect;
+use crate::cli::MultiSelect;
 
 /// Configuration settings used in the execution of a MultiSelectPrompt.
 #[derive(Copy, Clone, Debug)]

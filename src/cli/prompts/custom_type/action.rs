@@ -1,4 +1,4 @@
-use crate::{ui::Key, InnerAction, InputAction};
+use crate::cli::{ui::Key, InnerAction, InputAction};
 
 use super::config::CustomTypeConfig;
 

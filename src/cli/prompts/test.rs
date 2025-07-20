@@ -1,4 +1,4 @@
-use crate::{
+use crate::cli::{
     terminal::crossterm::CrosstermTerminal,
     ui::{Backend, InputReader, Key, RenderConfig},
 };
@@ -7,7 +7,7 @@ impl<T> InputReader for T
 where
     T: Iterator<Item = Key>,
 {
-    fn read_key(&mut self) -> crate::error::InquireResult<Key> {
+    fn read_key(&mut self) -> crate::cli::error::InquireResult<Key> {
         let key = self.next();
 
         match key {

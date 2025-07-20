@@ -1,4 +1,4 @@
-use crate::{
+use crate::cli::{
     ui::{Key, KeyModifiers},
     InnerAction,
 };

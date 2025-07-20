@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use crate::{
+use crate::cli::{
     error::InquireResult,
     list_option::{FromListOption, ListOption},
 };

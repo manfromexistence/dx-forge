@@ -8,8 +8,8 @@ use unicode_width::UnicodeWidthChar;
 
 use super::dimension::Dimension;
 use super::{Position, Styled};
-use crate::ansi::{AnsiAware, AnsiAwareChar};
-use crate::terminal::{Terminal, TerminalSize};
+use crate::cli::ansi::{AnsiAware, AnsiAwareChar};
+use crate::cli::terminal::{Terminal, TerminalSize};
 
 #[derive(Debug, Default)]
 struct FrameRow {
@@ -442,7 +442,7 @@ where
 
 #[cfg(test)]
 mod test {
-    use crate::{
+    use crate::cli::{
         error::InquireResult,
         terminal::{test::MockTerminal, TerminalSize},
     };

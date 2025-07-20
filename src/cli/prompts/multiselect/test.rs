@@ -1,4 +1,4 @@
-use crate::{
+use crate::cli::{
     formatter::MultiOptionFormatter,
     list_option::ListOption,
     test::fake_backend,

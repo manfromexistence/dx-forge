@@ -2,7 +2,7 @@ use std::io::{Result, Write};
 
 use console::{Attribute, Color, Key, Style, Term};
 
-use crate::{
+use crate::cli::{
     error::InquireResult,
     ui::{Attributes, InputReader, StyleSheet, Styled},
 };
@@ -24,7 +24,7 @@ impl ConsoleTerminal {
 }
 
 impl InputReader for ConsoleTerminal {
-    fn read_key(&mut self) -> InquireResult<crate::ui::Key> {
+    fn read_key(&mut self) -> InquireResult<crate::cli::ui::Key> {
         let key = self.term.read_key()?;
         Ok(key.into())
     }
@@ -113,12 +113,12 @@ impl From<StyleSheet> for Style {
     fn from(from: StyleSheet) -> Self {
         let mut style = Style::new();
 
-        let bg = from.bg.and_then(crate::ui::Color::into_console_color);
+        let bg = from.bg.and_then(crate::cli::ui::Color::into_console_color);
         if let Some(bg) = bg {
             style = style.bg(bg);
         }
 
-        let fg = from.fg.and_then(crate::ui::Color::into_console_color);
+        let fg = from.fg.and_then(crate::cli::ui::Color::into_console_color);
         if let Some(fg) = fg {
             style = style.fg(fg);
         }
@@ -135,9 +135,9 @@ impl From<StyleSheet> for Style {
     }
 }
 
-impl crate::ui::Color {
+impl crate::cli::ui::Color {
     fn into_console_color(self) -> Option<Color> {
-        use crate::ui::Color as C;
+        use crate::cli::ui::Color as C;
         match self {
             C::Black | C::DarkGrey => Some(Color::Black),
             C::LightRed | C::DarkRed => Some(Color::Red),
@@ -153,9 +153,9 @@ impl crate::ui::Color {
     }
 }
 
-impl From<Key> for crate::ui::Key {
+impl From<Key> for crate::cli::ui::Key {
     fn from(key: Key) -> Self {
-        use crate::ui::KeyModifiers;
+        use crate::cli::ui::KeyModifiers;
 
         match key {
             Key::Escape => Self::Escape,

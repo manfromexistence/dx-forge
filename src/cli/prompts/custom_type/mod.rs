@@ -6,7 +6,7 @@ pub use action::*;
 
 use std::str::FromStr;
 
-use crate::{
+use crate::cli::{
     config::get_configuration,
     error::{InquireError, InquireResult},
     formatter::CustomTypeFormatter,
@@ -75,7 +75,7 @@ use self::prompt::CustomTypePrompt;
 /// }
 /// ```
 ///
-/// [`CustomType`]: crate::CustomType
+/// [`CustomType`]: crate::cli::CustomType
 #[derive(Clone)]
 pub struct CustomType<'a, T> {
     /// Message to be presented to the user.

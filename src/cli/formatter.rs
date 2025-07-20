@@ -46,10 +46,10 @@
 //! ? What's your name? My name is Mikael
 //! ```
 
-use crate::list_option::ListOption;
+use crate::cli::list_option::ListOption;
 
 /// Type alias for formatters that receive a string slice as the input,
-/// required by [Text](crate::Text) and [Password](crate::Password) for example.
+/// required by [Text](crate::cli::Text) and [Password](crate::cli::Password) for example.
 ///
 /// Formatters receive the user input and return a [String] to be displayed
 /// to the user as the final answer.
@@ -65,7 +65,7 @@ use crate::list_option::ListOption;
 /// ```
 pub type StringFormatter<'a> = &'a dyn Fn(&str) -> String;
 
-/// Type alias for formatters used in [Confirm](crate::Confirm) prompts.
+/// Type alias for formatters used in [Confirm](crate::cli::Confirm) prompts.
 ///
 /// Formatters receive the user input and return a [String] to be displayed
 /// to the user as the final answer.
@@ -84,7 +84,7 @@ pub type StringFormatter<'a> = &'a dyn Fn(&str) -> String;
 /// ```
 pub type BoolFormatter<'a> = &'a dyn Fn(bool) -> String;
 
-/// Type alias for formatters used in [Select](crate::Select) prompts.
+/// Type alias for formatters used in [Select](crate::cli::Select) prompts.
 ///
 /// Formatters receive the user input and return a [String] to be displayed
 /// to the user as the final answer.
@@ -101,7 +101,7 @@ pub type BoolFormatter<'a> = &'a dyn Fn(bool) -> String;
 /// ```
 pub type OptionFormatter<'a, T> = &'a dyn Fn(ListOption<&T>) -> String;
 
-/// Type alias for formatters used in [`MultiSelect`](crate::MultiSelect) prompts.
+/// Type alias for formatters used in [`MultiSelect`](crate::cli::MultiSelect) prompts.
 ///
 /// Formatters receive the user input and return a [String] to be displayed
 /// to the user as the final answer.
@@ -129,7 +129,7 @@ pub type OptionFormatter<'a, T> = &'a dyn Fn(ListOption<&T>) -> String;
 /// ```
 pub type MultiOptionFormatter<'a, T> = &'a dyn Fn(&[ListOption<&T>]) -> String;
 
-/// Type alias for formatters used in [`CustomType`](crate::CustomType) prompts.
+/// Type alias for formatters used in [`CustomType`](crate::cli::CustomType) prompts.
 ///
 /// Formatters receive the user input and return a [String] to be displayed
 /// to the user as the final answer.
@@ -150,7 +150,7 @@ pub type CustomTypeFormatter<'a, T> = &'a dyn Fn(T) -> String;
 
 #[cfg(feature = "date")]
 
-/// Type alias for formatters used in [`DateSelect`](crate::DateSelect) prompts.
+/// Type alias for formatters used in [`DateSelect`](crate::cli::DateSelect) prompts.
 ///
 /// Formatters receive the user input and return a [String] to be displayed
 /// to the user as the final answer.
@@ -184,7 +184,7 @@ pub type DateFormatter<'a> = &'a dyn Fn(chrono::NaiveDate) -> String;
 /// ```
 pub const DEFAULT_STRING_FORMATTER: StringFormatter<'_> = &|val| String::from(val);
 
-/// String formatter used by default in [Confirm](crate::Confirm) prompts.
+/// String formatter used by default in [Confirm](crate::cli::Confirm) prompts.
 /// Translates `bool` to `"Yes"` and `false` to `"No"`.
 ///
 /// # Examples
@@ -205,7 +205,7 @@ pub const DEFAULT_BOOL_FORMATTER: BoolFormatter<'_> = &|ans| {
 };
 
 #[cfg(feature = "date")]
-/// String formatter used by default in [`DateSelect`](crate::DateSelect) prompts.
+/// String formatter used by default in [`DateSelect`](crate::cli::DateSelect) prompts.
 /// Prints the selected date in the format: Month Day, Year.
 ///
 /// # Examples

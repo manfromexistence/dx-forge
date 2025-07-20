@@ -3,7 +3,7 @@
 
 use std::fmt::Debug;
 
-use crate::ui::{Key, KeyModifiers};
+use crate::cli::ui::{Key, KeyModifiers};
 
 /// Top-level type to describe the directives a prompt
 /// receives.
@@ -67,7 +67,7 @@ where
 
 #[cfg(test)]
 mod test {
-    use crate::{
+    use crate::cli::{
         ui::{Key, KeyModifiers},
         Action, InnerAction,
     };

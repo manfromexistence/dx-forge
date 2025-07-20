@@ -1,4 +1,4 @@
-use crate::Text;
+use crate::cli::Text;
 
 /// Configuration settings used in the execution of a TextPrompt.
 #[derive(Copy, Clone, Debug)]

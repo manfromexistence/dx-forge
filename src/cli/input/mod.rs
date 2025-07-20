@@ -4,7 +4,7 @@ mod test;
 
 use unicode_segmentation::UnicodeSegmentation;
 
-use crate::InputAction;
+use crate::cli::InputAction;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Magnitude {

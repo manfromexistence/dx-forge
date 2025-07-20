@@ -9,7 +9,7 @@ pub use action::*;
 
 use std::fmt::Display;
 
-use crate::{
+use crate::cli::{
     config::get_configuration,
     error::{InquireError, InquireResult},
     formatter::MultiOptionFormatter,
@@ -59,7 +59,7 @@ static DEFAULT_MATCHER: Lazy<SkimMatcherV2> = Lazy::new(|| SkimMatcherV2::defaul
 ///
 /// For a full-featured example, check the [GitHub repository](https://github.com/mikaelmello/inquire/blob/main/inquire/examples/multiselect.rs).
 ///
-/// [`InquireError::InvalidConfiguration`]: crate::error::InquireError::InvalidConfiguration
+/// [`InquireError::InvalidConfiguration`]: crate::cli::error::InquireError::InvalidConfiguration
 #[derive(Clone)]
 pub struct MultiSelect<'a, T> {
     /// Message to be presented to the user.
@@ -127,7 +127,7 @@ impl<'a, T> MultiSelect<'a, T>
 where
     T: Display,
 {
-    /// String formatter used by default in [MultiSelect](crate::MultiSelect) prompts.
+    /// String formatter used by default in [MultiSelect](crate::cli::MultiSelect) prompts.
     /// Prints the string value of all selected options, separated by commas.
     ///
     /// # Examples
@@ -194,10 +194,10 @@ where
         };
 
     /// Default page size, equal to the global default page size [config::DEFAULT_PAGE_SIZE]
-    pub const DEFAULT_PAGE_SIZE: usize = crate::config::DEFAULT_PAGE_SIZE;
+    pub const DEFAULT_PAGE_SIZE: usize = crate::cli::config::DEFAULT_PAGE_SIZE;
 
     /// Default value of vim mode, equal to the global default value [config::DEFAULT_PAGE_SIZE]
-    pub const DEFAULT_VIM_MODE: bool = crate::config::DEFAULT_VIM_MODE;
+    pub const DEFAULT_VIM_MODE: bool = crate::cli::config::DEFAULT_VIM_MODE;
 
     /// Default starting cursor index.
     pub const DEFAULT_STARTING_CURSOR: usize = 0;
@@ -389,7 +389,7 @@ where
     /// Parses the provided behavioral and rendering options and prompts
     /// the CLI user for input according to the defined rules.
     ///
-    /// Returns a vector of [`ListOption`](crate::list_option::ListOption)s containing
+    /// Returns a vector of [`ListOption`](crate::cli::list_option::ListOption)s containing
     /// the index of the selections and the owned objects selected by the user.
     ///
     /// This method is intended for flows where the user skipping/cancelling
@@ -409,7 +409,7 @@ where
     /// Parses the provided behavioral and rendering options and prompts
     /// the CLI user for input according to the defined rules.
     ///
-    /// Returns a [`ListOption`](crate::list_option::ListOption) containing
+    /// Returns a [`ListOption`](crate::cli::list_option::ListOption) containing
     /// the index of the selection and the owned object selected by the user.
     pub fn raw_prompt(self) -> InquireResult<Vec<ListOption<T>>> {
         let (input_reader, terminal) = get_default_terminal()?;

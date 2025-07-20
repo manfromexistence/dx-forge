@@ -8,7 +8,7 @@ mod test;
 pub use action::*;
 use std::fmt::Display;
 
-use crate::{
+use crate::cli::{
     config::get_configuration,
     error::{InquireError, InquireResult},
     formatter::OptionFormatter,
@@ -68,7 +68,7 @@ static DEFAULT_MATCHER: Lazy<SkimMatcherV2> = Lazy::new(|| SkimMatcherV2::defaul
 /// }
 /// ```
 ///
-/// [`InquireError::InvalidConfiguration`]: crate::error::InquireError::InvalidConfiguration
+/// [`InquireError::InvalidConfiguration`]: crate::cli::error::InquireError::InvalidConfiguration
 #[derive(Clone)]
 pub struct Select<'a, T> {
     /// Message to be presented to the user.
@@ -124,7 +124,7 @@ impl<'a, T> Select<'a, T>
 where
     T: Display,
 {
-    /// String formatter used by default in [Select](crate::Select) prompts.
+    /// String formatter used by default in [Select](crate::cli::Select) prompts.
     /// Simply prints the string value contained in the selected option.
     ///
     /// # Examples
@@ -179,10 +179,10 @@ where
         };
 
     /// Default page size.
-    pub const DEFAULT_PAGE_SIZE: usize = crate::config::DEFAULT_PAGE_SIZE;
+    pub const DEFAULT_PAGE_SIZE: usize = crate::cli::config::DEFAULT_PAGE_SIZE;
 
     /// Default value of vim mode.
-    pub const DEFAULT_VIM_MODE: bool = crate::config::DEFAULT_VIM_MODE;
+    pub const DEFAULT_VIM_MODE: bool = crate::cli::config::DEFAULT_VIM_MODE;
 
     /// Default starting cursor index.
     pub const DEFAULT_STARTING_CURSOR: usize = 0;
@@ -328,7 +328,7 @@ where
     /// Parses the provided behavioral and rendering options and prompts
     /// the CLI user for input according to the defined rules.
     ///
-    /// Returns a [`ListOption`](crate::list_option::ListOption) containing
+    /// Returns a [`ListOption`](crate::cli::list_option::ListOption) containing
     /// the index of the selection and the owned object selected by the user.
     pub fn raw_prompt(self) -> InquireResult<ListOption<T>> {
         let (input_reader, terminal) = get_default_terminal()?;

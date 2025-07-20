@@ -4,7 +4,7 @@ use std::sync::Mutex;
 
 use once_cell::sync::Lazy;
 
-use crate::ui::RenderConfig;
+use crate::cli::ui::RenderConfig;
 
 static GLOBAL_RENDER_CONFIGURATION: Lazy<Mutex<RenderConfig<'static>>> =
     Lazy::new(|| Mutex::new(RenderConfig::default()));

@@ -1,6 +1,6 @@
 use std::cmp::min;
 
-use crate::{
+use crate::cli::{
     autocompletion::{NoAutoCompletion, Replacement},
     error::InquireResult,
     formatter::StringFormatter,
