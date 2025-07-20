@@ -1,4 +1,5 @@
-use crate::cli::{error::InquireResult, Confirm, CustomType, Password, Text};
+use crate::cli::{error::InquireResult, Confirm, CustomType, Text};
+// use crate::cli::{error::InquireResult, Confirm, CustomType, Password, Text};
 
 /// This function is a helpful one-liner to prompt the user for the confirmation of an action.
 ///
@@ -102,12 +103,13 @@ where
 ///
 /// This function will return an error if there is a problem interacting with the terminal, or if the user
 /// cancels the operation by pressing `Ctrl+C`.
-pub fn prompt_secret<M>(message: M) -> InquireResult<String>
-where
-    M: AsRef<str>,
-{
-    Password::new(message.as_ref()).prompt()
-}
+/// 
+// pub fn prompt_secret<M>(message: M) -> InquireResult<String>
+// where
+//     M: AsRef<str>,
+// {
+//     Password::new(message.as_ref()).prompt()
+// }
 
 /// This function is a helpful one-liner to prompt the user for a date.
 ///

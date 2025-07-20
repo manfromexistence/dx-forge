@@ -1,12 +1,9 @@
-#![warn(missing_docs)]
-#![deny(unused_crate_dependencies)]
-#![cfg_attr(docsrs, feature(doc_cfg))]
-#![allow(clippy::bool_to_int_with_if)]
+// #![warn(missing_docs)]
+// #![deny(unused_crate_dependencies)]
+// #![cfg_attr(docsrs, feature(doc_cfg))]
+// #![allow(clippy::bool_to_int_with_if)]
 
 mod ansi;
-// #[cfg(feature = "date")]
-// mod date_utils;
-// mod date_utils;
 mod enum_support;
 mod input;
 mod terminal;
