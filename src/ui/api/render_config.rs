@@ -2,7 +2,7 @@ use std::env;
 
 use super::{Color, StyleSheet, Styled};
 
-/// Rendering configuration that can be applied to a prompt.
+/// Rendering configuration that can be applied to a prompt in dx cli.
 ///
 /// Render configurations can set mostly style sheets for particular
 /// parts of the prompt layout. Additionally, it allows you to set
