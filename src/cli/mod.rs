@@ -4,6 +4,8 @@
 #![allow(clippy::bool_to_int_with_if)]
 
 mod ansi;
+#[cfg(feature = "date")]
+mod date_utils;
 mod date_utils;
 mod enum_support;
 mod input;
