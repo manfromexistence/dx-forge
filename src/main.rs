@@ -70,50 +70,38 @@ impl Theme {
     fn default_themes() -> Vec<Theme> {
         vec![
             // The "dark" theme you provided, set as the default.
-            Theme {
-                name: "Default Dark".to_string(),
-                background: Color::Rgb(20, 20, 22),      // oklch(0.13 0 0)
-                foreground: Color::Rgb(252, 252, 252),    // oklch(1.00 0 0)
-                primary: Color::Rgb(252, 252, 252),       // oklch(1.00 0 0)
-                primary_foreground: Color::Rgb(12, 12, 13), // oklch(0 0 0)
-                destructive: Color::Rgb(228, 51, 62),    // oklch(0.69 0.20 23.91)
-                border: Color::Rgb(41, 41, 45),          // oklch(0.26 0 0)
-                diff_add_bg: Color::Rgb(10, 40, 10),
-                diff_delete_bg: Color::Rgb(50, 20, 20),
-            },
-            // The "light" theme you provided.
-            Theme {
-                name: "Default Light".to_string(),
-                background: Color::Rgb(252, 252, 252),    // oklch(0.99 0 0)
-                foreground: Color::Rgb(12, 12, 13),       // oklch(0 0 0)
-                primary: Color::Rgb(12, 12, 13),          // oklch(0 0 0)
-                primary_foreground: Color::Rgb(252, 252, 252), // oklch(1.00 0 0)
-                destructive: Color::Rgb(239, 68, 68),     // oklch(0.63 0.19 23.03)
-                border: Color::Rgb(234, 234, 235),       // oklch(0.92 0 0)
-                diff_add_bg: Color::Rgb(220, 255, 220),
-                diff_delete_bg: Color::Rgb(255, 220, 220),
-            },
-            // An extra theme using the Tailwind "Slate" palette.
-            Theme {
-                name: "Tailwind Slate".to_string(),
-                background: Color::Rgb(15, 23, 42),      // slate-950
-                foreground: Color::Rgb(226, 232, 240),    // slate-200
-                primary: Color::Rgb(71, 85, 105),         // slate-600
-                primary_foreground: Color::Rgb(241, 245, 249), // slate-100
-                destructive: Color::Rgb(220, 38, 38),     // red-600
-                border: Color::Rgb(51, 65, 85),           // slate-700
-                diff_add_bg: Color::Rgb(10, 40, 10),
-                diff_delete_bg: Color::Rgb(50, 20, 20),
-            },
+            // Theme {
+            //     name: "Dark".to_string(),
+            //     background: Color::Rgb(0, 0, 0),      // oklch(0.13 0 0)
+            //     foreground: Color::Rgb(252, 252, 252),    // oklch(1.00 0 0)
+            //     primary: Color::Rgb(252, 252, 252),       // oklch(1.00 0 0)
+            //     primary_foreground: Color::Rgb(12, 12, 13), // oklch(0 0 0)
+            //     destructive: Color::Rgb(228, 51, 62),    // oklch(0.69 0.20 23.91)
+            //     border: Color::Rgb(41, 41, 45),          // oklch(0.26 0 0)
+            //     diff_add_bg: Color::Rgb(10, 40, 10),
+            //     diff_delete_bg: Color::Rgb(50, 20, 20),
+            // },
+            // // The "light" theme you provided.
+            // Theme {
+            //     name: "Light".to_string(),
+            //     background: Color::Rgb(252, 252, 252),    // oklch(0.99 0 0)
+            //     foreground: Color::Rgb(12, 12, 13),       // oklch(0 0 0)
+            //     primary: Color::Rgb(12, 12, 13),          // oklch(0 0 0)
+            //     primary_foreground: Color::Rgb(252, 252, 252), // oklch(1.00 0 0)
+            //     destructive: Color::Rgb(239, 68, 68),     // oklch(0.63 0.19 23.03)
+            //     border: Color::Rgb(234, 234, 235),       // oklch(0.92 0 0)
+            //     diff_add_bg: Color::Rgb(220, 255, 220),
+            //     diff_delete_bg: Color::Rgb(255, 220, 220),
+            // },
             // An extra theme using the Tailwind "Rose" palette.
             Theme {
-                name: "Tailwind Rose".to_string(),
+                name: "Rose".to_string(),
                 background: Color::Rgb(68, 20, 26),       // rose-950
-                foreground: Color::Rgb(255, 228, 230),    // rose-200
+                foreground: Color::Rgb(0, 0, 0),    // rose-200
                 primary: Color::Rgb(253, 164, 175),       // rose-300
-                primary_foreground: Color::Rgb(68, 20, 26), // rose-950
+                primary_foreground: Color::Rgb(0, 0, 0), // rose-950
                 destructive: Color::Rgb(244, 63, 94),     // rose-500
-                border: Color::Rgb(159, 18, 57),          // rose-800
+                border: Color::Rgb(0, 0, 0),          // rose-800
                 diff_add_bg: Color::Rgb(20, 40, 20),
                 diff_delete_bg: Color::Rgb(60, 30, 30),
             },
