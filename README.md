@@ -16,8 +16,73 @@ git clone https://github.com/haydenbleasel/ultracite.git && cd ultracite && rm -
 git clone https://github.com/tailwindlabs/tailwindcss && cd tailwindcss && rm -rf .git && cd ..
 ```
 
+<!-- 
+use lolcrab::Lolcrab;
+use std::io;
 
-<!-- use dx::Text;
+const TEXT: &str = "\
+•••••••••••••••••••••••••••••••••••••••••••
+••442463299144744830108724702438783348716••
+••665891426009540978622724448305819269356••
+••078289454141226451790882961903610719673••
+••56505384476•••••••••••••••••39761609699••
+••47928752907•• { lolcrab } ••33810561851••
+••51609982385•••••••••••••••••43459368213••
+••980457234663167653959566555465520046709••
+••677103598707232478714861999441705454744••
+••012721882924436718718457599087686681354••
+•••••••••••••••••••••••••••••••••••••••••••
+";
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let stdout = io::stdout();
+    let mut stdout = stdout.lock();
+
+    // Initialize Lolcrab using default gradient and default noise
+    let mut lol = Lolcrab::new(None, None);
+
+    lol.colorize_str(TEXT, &mut stdout)?;
+
+    lol.set_invert(true);
+    lol.randomize_position();
+    lol.colorize_str(TEXT, &mut stdout)?;
+
+    lol.set_invert(false);
+    lol.reset_position();
+    lol.colorize_str(TEXT, &mut stdout)?;
+
+    Ok(())
+} -->
+
+<!-- 
+use figlet_rs::FIGfont;
+use lolcrab::Lolcrab;
+use std::io::{self, Write};
+
+fn main() {
+    // 1. Create the big text with figlet
+    let font = FIGfont::standard().unwrap();
+    let figlet_text = font.convert("dx").unwrap();
+    let figlet_string = figlet_text.to_string();
+
+    // 2. Initialize Lolcrab
+    let mut lol = Lolcrab::new(None, None);
+
+    // 3. Get a handle to the terminal output
+    let stdout = io::stdout();
+    let mut handle = stdout.lock();
+
+    // 4. Clear the screen to ensure a clean display
+    write!(handle, "\x1B[2J\x1B[1;1H").unwrap();
+
+    // 5. Colorize the text and print it to the terminal just once
+    lol.colorize_str(&figlet_string, &mut handle).unwrap();
+} 
+-->
+
+
+<!-- 
+use dx::Text;
 
 fn main() {
     let name = Text::new("What command you want to run?").prompt();
@@ -50,4 +115,5 @@ async fn main() -> anyhow::Result<()> {
 
     println!("DX: Shutting down.");
     Ok(())
-} -->
+} 
+-->
