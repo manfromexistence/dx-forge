@@ -1,186 +1,38 @@
+use figlet_rs::FIGfont;
 use lolcrab::Lolcrab;
-use std::io;
+use std::io::{self, Write};
+use std::thread;
+use std::time::Duration;
 
-const TEXT: &str = "\
-•••••••••••••••••••••••••••••••••••••••••••
-••442463299144744830108724702438783348716••
-••665891426009540978622724448305819269356••
-••078289454141226451790882961903610719673••
-••56505384476•••••••••••••••••39761609699••
-••47928752907•• { lolcrab } ••33810561851••
-••51609982385•••••••••••••••••43459368213••
-••980457234663167653959566555465520046709••
-••677103598707232478714861999441705454744••
-••012721882924436718718457599087686681354••
-•••••••••••••••••••••••••••••••••••••••••••
-";
+fn main() {
+    // 1. Create the big text with figlet
+    let font = FIGfont::standard().unwrap();
+    let figlet_text = font.convert("dx project").unwrap();
+    let figlet_string = figlet_text.to_string();
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let stdout = io::stdout();
-    let mut stdout = stdout.lock();
-
-    // Initialize Lolcrab using default gradient and default noise
+    // 2. Initialize Lolcrab from v0.4.1
     let mut lol = Lolcrab::new(None, None);
 
-    lol.colorize_str(TEXT, &mut stdout)?;
+    // Get a handle to the terminal output
+    let stdout = io::stdout();
 
-    lol.set_invert(true);
-    lol.randomize_position();
-    lol.colorize_str(TEXT, &mut stdout)?;
+    // 3. Start the animation loop
+    loop {
+        let mut handle = stdout.lock();
 
-    lol.set_invert(false);
-    lol.reset_position();
-    lol.colorize_str(TEXT, &mut stdout)?;
+        // Clear the screen and move the cursor to the top
+        write!(handle, "\x1B[2J\x1B[1;1H").unwrap();
 
-    Ok(())
+        // Colorize the text and print it directly to the terminal
+        lol.colorize_str(&figlet_string, &mut handle).unwrap();
+
+        // Ensure the output is written immediately
+        handle.flush().unwrap();
+
+        // Randomize the color position for the next frame's animation
+        lol.randomize_position();
+
+        // Pause briefly to control animation speed
+        thread::sleep(Duration::from_millis(50));
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// use dx::Text;
-
-// fn main() {
-//     let name = Text::new("What command you want to run?").prompt();
-
-//     match name {
-//         Ok(name) => println!("Command [{name}] is still in developement - it is coming soon..."),
-//         Err(_) => println!("An error happened when running this command, try again later."),
-//     }
-// }
-
-// mod chronicle;
-// mod generator;
-// mod observer;
-
-// #[tokio::main]
-// async fn main() -> anyhow::Result<()> {
-//     println!("DX: Initializing...");
-
-//     let chronicle_repo = match chronicle::initialize() {
-//         Ok(repo) => repo,
-//         Err(e) => {
-//             eprintln!("DX Error: Failed to initialize the Chronicle: {}", e);
-//             return Err(e);
-//         }
-//     };
-
-//     if let Err(e) = observer::start(chronicle_repo.clone()).await {
-//         eprintln!("DX Error: The observer failed with an error: {}", e);
-//     }
-
-//     println!("DX: Shutting down.");
-//     Ok(())
-// }
