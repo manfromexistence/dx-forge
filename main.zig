@@ -22,10 +22,11 @@ pub fn main() !void {
     const file_count = 100;
     const content = "Hello, manfromexistence!";
 
-    // Ensure the target directory exists. If not, create it.
-    // This makes the program runnable without manual setup.
+    // Get the current working directory.
     const cwd = std.fs.cwd();
-    try cwd.makeDir(dir_name);
+    // Ensure the target directory exists. `makePath` is idempotent, meaning
+    // it won't error if the directory already exists, making the program robust.
+    try cwd.makePath(dir_name);
 
     // Let's start the clock!
     // We create a high-precision timer to measure the operation's duration.
@@ -35,15 +36,15 @@ pub fn main() !void {
     // We'll loop `file_count` times to create each file.
     var i: u32 = 0;
     while (i < file_count) : (i += 1) {
-        // Dynamically create the filename for each iteration (e.g., "file_0.txt", "file_1.txt").
-        // We allocate memory for the filename string.
-        const filename = try std.fmt.allocPrint(allocator, "file_{d}.txt", .{i});
-        // `defer` here ensures the allocated memory for the filename is freed at the end of each loop iteration.
-        defer allocator.free(filename);
+        // Dynamically create the full filepath for each iteration (e.g., "zig_modules/file_0.txt").
+        // We format the string and allocate memory for it in one step.
+        const filepath = try std.fmt.allocPrint(allocator, "{s}/file_{d}.txt", .{ dir_name, i });
+        // `defer` ensures the allocated memory for the filepath is freed at the end of each loop iteration.
+        defer allocator.free(filepath);
 
-        // Open (or create) the file within the specified directory.
-        // We're using `cwd.createFile` which is a convenient way to create a file in a relative path.
-        const file = try cwd.createFile(.{ .sub_path = dir_name, .basename = filename }, .{});
+        // Open (or create) the file using the full path relative to the current working directory.
+        // The second argument is for options; we pass an empty struct for defaults.
+        const file = try cwd.createFile(filepath, .{});
         // And of course, we `defer` the closing of the file to ensure it's always released.
         defer file.close();
 
@@ -62,4 +63,3 @@ pub fn main() !void {
     std.debug.print("\nSuccessfully created {d} files in the '{s}' directory.\n", .{ file_count, dir_name });
     std.debug.print("Total time taken: {d:.4}ms\n\n", .{elapsed_ms});
 }
-
