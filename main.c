@@ -8,9 +8,9 @@
 // The main function is the entry point of our program.
 int main() {
     // Define the directory and the content for the files.
-    const char* dir_name = "c_modules";
+    const char* dir_name = "c_modules_compiled_by_zig";
     const int file_count = 100;
-    const char* content = "Hello, manfromexistence!";
+    const char* content = "Hello, manfromexistence! (from C code compiled with Zig)";
 
     // Create the directory. On Linux, mkdir won't throw an error if the directory
     // already exists, it will just fail silently in that case, which is fine for us.

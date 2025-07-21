@@ -1,0 +1,1 @@
+Hello, manfromexistence! (from C code compiled with Zig)
