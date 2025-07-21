@@ -10,14 +10,23 @@ use ratatui::{
     layout::{Constraint, Direction, Layout, Rect},
     style::{Color, Modifier, Style},
     text::{Line, Span, Text},
-    widgets::{Block, Borders, List, ListItem, ListState, Paragraph, Wrap},
+    widgets::{
+        block::Title, // Import the Title struct
+        Block,
+        Borders,
+        List,
+        ListItem,
+        ListState,
+        Paragraph,
+        Wrap,
+    },
     Frame, Terminal,
 };
 use similar::{ChangeTag, TextDiff};
 use std::{error::Error, io};
 use syntect::{
     easy::HighlightLines,
-    highlighting::{Style as SyntectStyle, ThemeSet},
+    highlighting::{ThemeSet}, // Removed unused `Style as SyntectStyle`
     parsing::SyntaxSet,
     util::LinesWithEndings,
 };
@@ -70,38 +79,38 @@ impl Theme {
     fn default_themes() -> Vec<Theme> {
         vec![
             // The "dark" theme you provided, set as the default.
-            // Theme {
-            //     name: "Dark".to_string(),
-            //     background: Color::Rgb(0, 0, 0),      // oklch(0.13 0 0)
-            //     foreground: Color::Rgb(252, 252, 252),    // oklch(1.00 0 0)
-            //     primary: Color::Rgb(252, 252, 252),       // oklch(1.00 0 0)
-            //     primary_foreground: Color::Rgb(12, 12, 13), // oklch(0 0 0)
-            //     destructive: Color::Rgb(228, 51, 62),    // oklch(0.69 0.20 23.91)
-            //     border: Color::Rgb(41, 41, 45),          // oklch(0.26 0 0)
-            //     diff_add_bg: Color::Rgb(10, 40, 10),
-            //     diff_delete_bg: Color::Rgb(50, 20, 20),
-            // },
-            // // The "light" theme you provided.
-            // Theme {
-            //     name: "Light".to_string(),
-            //     background: Color::Rgb(252, 252, 252),    // oklch(0.99 0 0)
-            //     foreground: Color::Rgb(12, 12, 13),       // oklch(0 0 0)
-            //     primary: Color::Rgb(12, 12, 13),          // oklch(0 0 0)
-            //     primary_foreground: Color::Rgb(252, 252, 252), // oklch(1.00 0 0)
-            //     destructive: Color::Rgb(239, 68, 68),     // oklch(0.63 0.19 23.03)
-            //     border: Color::Rgb(234, 234, 235),       // oklch(0.92 0 0)
-            //     diff_add_bg: Color::Rgb(220, 255, 220),
-            //     diff_delete_bg: Color::Rgb(255, 220, 220),
-            // },
+            Theme {
+                name: "Dark".to_string(),
+                background: Color::Rgb(0, 0, 0),      // oklch(0.13 0 0)
+                foreground: Color::Rgb(252, 252, 252),    // oklch(1.00 0 0)
+                primary: Color::Rgb(252, 252, 252),       // oklch(1.00 0 0)
+                primary_foreground: Color::Rgb(12, 12, 13), // oklch(0 0 0)
+                destructive: Color::Rgb(228, 51, 62),    // oklch(0.69 0.20 23.91)
+                border: Color::Rgb(41, 41, 45),          // oklch(0.26 0 0)
+                diff_add_bg: Color::Rgb(10, 40, 10),
+                diff_delete_bg: Color::Rgb(50, 20, 20),
+            },
+            // The "light" theme you provided.
+            Theme {
+                name: "Light".to_string(),
+                background: Color::Rgb(255, 255, 255),    // oklch(0.99 0 0)
+                foreground: Color::Rgb(12, 12, 13),       // oklch(0 0 0)
+                primary: Color::Rgb(12, 12, 13),          // oklch(0 0 0)
+                primary_foreground: Color::Rgb(252, 252, 252), // oklch(1.00 0 0)
+                destructive: Color::Rgb(239, 68, 68),     // oklch(0.63 0.19 23.03)
+                border: Color::Rgb(234, 234, 235),       // oklch(0.92 0 0)
+                diff_add_bg: Color::Rgb(220, 255, 220),
+                diff_delete_bg: Color::Rgb(255, 220, 220),
+            },
             // An extra theme using the Tailwind "Rose" palette.
             Theme {
                 name: "Rose".to_string(),
                 background: Color::Rgb(68, 20, 26),       // rose-950
-                foreground: Color::Rgb(0, 0, 0),    // rose-200
+                foreground: Color::Rgb(255, 228, 230),    // rose-200
                 primary: Color::Rgb(253, 164, 175),       // rose-300
-                primary_foreground: Color::Rgb(0, 0, 0), // rose-950
+                primary_foreground: Color::Rgb(68, 20, 26), // rose-950
                 destructive: Color::Rgb(244, 63, 94),     // rose-500
-                border: Color::Rgb(0, 0, 0),          // rose-800
+                border: Color::Rgb(159, 18, 57),          // rose-800
                 diff_add_bg: Color::Rgb(20, 40, 20),
                 diff_delete_bg: Color::Rgb(60, 30, 30),
             },
@@ -227,11 +236,14 @@ fn render_theme_list(f: &mut Frame, app: &mut App, area: Rect, theme: &Theme) {
 
     let list = List::new(items)
         .block(
+            // FIX: Style the content of the Title using a Span, not the Title struct itself.
             Block::default()
                 .borders(Borders::ALL)
-                .title("Themes")
-                .style(Style::default().fg(theme.foreground))
-                .border_style(Style::default().fg(theme.border)),
+                .border_style(Style::default().fg(theme.border))
+                .title(Title::from(Span::styled(
+                    "Themes",
+                    Style::default().fg(theme.foreground),
+                ))),
         )
         .highlight_style(
             Style::default()
@@ -250,12 +262,15 @@ fn render_diff_view(f: &mut Frame, area: Rect, theme: &Theme) {
     let paragraph = Paragraph::new(diff_text)
         .wrap(Wrap { trim: false })
         .block(
+            // FIX: Style the content of the Title using a Span, not the Title struct itself.
             Block::default()
                 .borders(Borders::ALL)
-                .title("Diff Preview")
-                .style(Style::default().fg(theme.foreground))
-                .border_style(Style::default().fg(theme.border)),
-    );
+                .border_style(Style::default().fg(theme.border))
+                .title(Title::from(Span::styled(
+                    "Diff Preview",
+                    Style::default().fg(theme.foreground),
+                ))),
+        );
         
     f.render_widget(paragraph, area);
 }
