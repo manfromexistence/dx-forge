@@ -60,10 +60,9 @@ console = { version = "0.15", optional = true, features = [
 ratatui = "0.29.0"
 
 tree-sitter = "0.22.6"
-tree-sitter-highlight = "0.22.4"
-# Add a grammar for each language you need
+tree-sitter-highlight = "0.22.6"
 tree-sitter-rust = "0.21.0"
-tree-sitter-javascript = "0.21.0"
+ansi_term = "0.12.1"
 
 
 

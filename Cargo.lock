@@ -39,6 +39,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "ansi_term"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d52a9bb7ec0cf484c551830a7ce27bd20d67eac647e1befb56b0be4ee39a55d2"
+dependencies = [
+ "winapi",
+]
+
+[[package]]
 name = "anstream"
 version = "0.6.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -390,6 +399,7 @@ dependencies = [
 name = "dx"
 version = "0.1.0"
 dependencies = [
+ "ansi_term",
  "bitflags 2.9.1",
  "chrono",
  "console",
@@ -409,7 +419,6 @@ dependencies = [
  "termion",
  "tree-sitter",
  "tree-sitter-highlight",
- "tree-sitter-javascript",
  "tree-sitter-rust",
  "unicode-segmentation",
  "unicode-width 0.1.14",
@@ -1518,16 +1527,6 @@ dependencies = [
  "lazy_static",
  "regex",
  "thiserror",
- "tree-sitter",
-]
-
-[[package]]
-name = "tree-sitter-javascript"
-version = "0.21.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8710a71bc6779e33811a8067bdda3ed08bed1733296ff915e44faf60f8c533d7"
-dependencies = [
- "cc",
  "tree-sitter",
 ]
 
