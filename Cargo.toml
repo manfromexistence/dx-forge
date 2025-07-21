@@ -58,6 +58,8 @@ chrono = { version = "0.4.1", default-features = true, optional = true }
 syntect = "5.2.0"
 similar = { version = "2.5.0", features = ["inline"] }
 lazy_static = "1.4.0" # To load syntax/themes only once
+figlet-rs = "0.1.5"
+lolcrab = "0.4.1"
 
 [dev-dependencies]
 rstest = "0.18.2"
