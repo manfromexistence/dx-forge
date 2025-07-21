@@ -3,6 +3,14 @@ const std = @import("std");
 
 // The `build` function is the main entry point for the Zig build system.
 pub fn build(b: *std.Build) void {
+    // --- Start Build Timer ---
+    // This timer will measure how long it takes for this `build` function to
+    // configure all the build steps.
+    var timer = std.time.Timer.start() catch |err| {
+        std.debug.print("Failed to start build timer: {}\n", .{err});
+        return;
+    };
+
     // Get the target architecture and OS for cross-compilation.
     const target = b.standardTargetOptions(.{});
 
@@ -10,30 +18,26 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     // --- Create the Executable ---
-    // We define an executable artifact but notice we are NOT using .root_source_file.
+    // We define an executable artifact.
     const exe = b.addExecutable(.{
         .name = "c_file_creator",
         .target = target,
         .optimize = optimize,
     });
 
-    // --- Add C Source File (The Fix!) ---
-    // This is the key change. We explicitly add `main.c` as a C source file.
-    // This tells Zig to use its C compiler frontend for this specific file,
-    // resolving the "invalid byte" error.
+    // --- Add C Source File ---
+    // We explicitly add `main.c` as a C source file.
     exe.addCSourceFile(.{
         .file = .{ .path = "main.c" },
         .flags = &.{}, // You could add C flags like "-std=c11" here if needed.
     });
 
     // --- Link Libraries ---
-    // We still need to tell Zig to link against the standard C library
-    // for functions like printf, fopen, etc.
+    // We tell Zig to link against the standard C library.
     exe.linkSystemLibrary("c");
 
     // --- Install Step ---
-    // This tells the build system to install the compiled executable into the
-    // `zig-out/bin/` directory.
+    // This tells the build system to install the compiled executable.
     b.installArtifact(exe);
 
     // --- Create a "Run" Step ---
@@ -43,4 +47,11 @@ pub fn build(b: *std.Build) void {
 
     const run_step = b.step("run", "Run the application");
     run_step.dependOn(&run_cmd.step);
+
+    // --- Report Build Configuration Time ---
+    // We read the timer and calculate the elapsed time in milliseconds.
+    const elapsed_ms = @as(f64, @floatFromInt(timer.read())) / 1_000_000.0;
+    // `std.debug.print` is the reliable way to print from a build script.
+    // This will appear before the output from your C program.
+    std.debug.print("Build configuration finished in {d:.4}ms.\n", .{elapsed_ms});
 }
