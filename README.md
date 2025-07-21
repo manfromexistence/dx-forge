@@ -6,6 +6,8 @@ npm install -g @anthropic-ai/claude-code
 
 
 ```
+git clone https://github.com/redox-os/ion.git && cd ion && rm -rf .git && cd ..
+git clone https://github.com/ohmyzsh/ohmyzsh && cd ohmyzsh && rm -rf .git && cd ..
 git clone https://github.com/shadcn-ui/ui && cd claude-code && rm -rf .git && cd ..
 git clone https://github.com/anthropics/claude-code && cd claude-code && rm -rf .git && cd ..
 git clone https://github.com/ratatui/ratatui && cd ratatui && rm -rf .git && cd ..
@@ -17,8 +19,37 @@ git clone https://github.com/haydenbleasel/ultracite.git && cd ultracite && rm -
 git clone https://github.com/tailwindlabs/tailwindcss && cd tailwindcss && rm -rf .git && cd ..
 ```
 
+<!-- use syntect::easy::HighlightLines;
+use syntect::parsing::SyntaxSet;
+use syntect::highlighting::{ThemeSet, Style};
+use syntect::util::{as_24_bit_terminal_escaped, LinesWithEndings};
 
+fn main() {
+    let ps = SyntaxSet::load_defaults_nonewlines();
+    let ts = ThemeSet::load_defaults();
 
+    let syntax = ps.find_syntax_by_extension("rs")
+        .expect("Could not find Rust syntax. Check syntect features in Cargo.toml.");
+
+    // Safely get the theme, or use a reliable fallback if it's not found.
+    let theme = ts.themes.get("Monokai (Dark)")
+        .unwrap_or_else(|| &ts.themes["base16-ocean.dark"]);
+
+    let code = r#"
+fn main() {
+    println!("Hello, from syntect!");
+}
+"#;
+
+    println!("--- Start of Highlighted Code ---");
+    let mut h = HighlightLines::new(syntax, theme);
+    for line in LinesWithEndings::from(code) {
+        let ranges: Vec<(Style, &str)> = h.highlight_line(line, &ps).unwrap();
+        let escaped = as_24_bit_terminal_escaped(&ranges[..], true);
+        print!("{}", escaped);
+    }
+    println!("--- End of Highlighted Code ---");
+} -->
 
 <!-- 
 use lolcrab::Lolcrab;
