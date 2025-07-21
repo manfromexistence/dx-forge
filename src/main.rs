@@ -1,57 +1,41 @@
-// main.rs
+use std::ffi::CString;
+use std::os::raw::{c_char, c_double, c_int};
 
-// To run this code, you need to add the `rayon` crate for easy parallelism.
-// Add this line to your `Cargo.toml` file under `[dependencies]`:
-// rayon = "1.8.1"
-// Then, run the code in release mode for maximum optimization: `cargo run --release`
-
-use rayon::prelude::*; // Import the parallel iterator traits
-use std::fs::{self, File};
-use std::io::Write;
-use std::path::PathBuf;
-use std::time::Instant;
+// This is the line I've added. It explicitly tells the Rust linker
+// to link against the static library named "file_creator_lib"
+// which our `build.rs` script creates.
+#[link(name = "file_creator_lib", kind = "static")]
+extern "C" {
+    // This `extern` block is the Foreign Function Interface (FFI) boundary.
+    // It tells Rust about the function signature from our C library.
+    fn create_files_in_c(dir_name: *const c_char, file_count: c_int, content: *const c_char) -> c_double;
+}
 
 fn main() {
-    // --- Configuration ---
-    const NUM_FILES: u32 = 100;
-    const DIRECTORY_NAME: &str = "rust_modules";
-    const FILE_CONTENT: &[u8] = b"Hello, manfromexistence!";
+    // Define the parameters for our C function in Rust.
+    let dir_name = "c_modules";
+    let file_count = 100;
+    let content = "Hello, manfromexistence!";
 
-    println!(
-        "Mission starting: Creating {} files in the '{}' directory...",
-        NUM_FILES, DIRECTORY_NAME
-    );
+    println!("Handing control over to C to create {} files...", file_count);
 
-    // --- Setup ---
-    // Create the target directory. `create_dir_all` is like `mkdir -p`,
-    // it won't return an error if the directory already exists.
-    fs::create_dir_all(DIRECTORY_NAME).expect("Failed to create directory.");
+    // To pass strings to C, they must be null-terminated.
+    // `CString` handles this for us.
+    let c_dir_name = CString::new(dir_name).expect("CString::new failed for dir_name");
+    let c_content = CString::new(content).expect("CString::new failed for content");
 
-    // --- Timed Operation ---
-    let start_time = Instant::now();
+    // Calling C functions is `unsafe` because the Rust compiler cannot
+    // guarantee the safety of the external code. We are taking responsibility here.
+    let time_taken = unsafe {
+        create_files_in_c(c_dir_name.as_ptr(), file_count as c_int, c_content.as_ptr())
+    };
 
-    // Use Rayon's parallel iterator to create files concurrently.
-    // `into_par_iter()` converts the range into a parallel iterator.
-    // `for_each` will then execute the provided closure on multiple threads.
-    (0..NUM_FILES).into_par_iter().for_each(|i| {
-        // Create a path for each new file. Using PathBuf is the idiomatic way.
-        let mut file_path = PathBuf::from(DIRECTORY_NAME);
-        file_path.push(format!("file_{}.txt", i));
-
-        // Create the file.
-        let mut file =
-            File::create(&file_path).expect(&format!("Failed to create file: {:?}", file_path));
-
-        // Write the content to the file.
-        file.write_all(FILE_CONTENT)
-            .expect(&format!("Failed to write to file: {:?}", file_path));
-    });
-
-    // --- Report Results ---
-    let duration = start_time.elapsed();
-
-    println!("\n--- Mission Accomplished, manfromexistence! ---");
-    println!("Successfully created {} files.", NUM_FILES);
-    println!("Total time taken: {:.2?}", duration);
-    println!("-----------------------------------------------");
+    // After the C function returns, we are back in safe Rust.
+    if time_taken < 0.0 {
+        println!("The C function reported an error.");
+    } else {
+        println!("\nRust has regained control!");
+        println!("Successfully created {} files in the '{}' directory.", file_count, dir_name);
+        println!("C code reported that it took {:.4}ms to complete.", time_taken);
+    }
 }

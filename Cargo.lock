@@ -426,6 +426,7 @@ version = "0.1.0"
 dependencies = [
  "ansi_term",
  "bitflags 2.9.1",
+ "cc",
  "chrono",
  "console",
  "crossterm 0.25.0",
