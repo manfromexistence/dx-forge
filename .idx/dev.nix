@@ -5,6 +5,7 @@
     pkgs.rustup
     pkgs.busybox
     pkgs.gcc
+    pkgs.neovim
   ];
   env = { };
   idx = {
