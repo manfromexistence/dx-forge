@@ -4,6 +4,8 @@ find . -maxdepth 1 -mindepth 1 -type d -exec du -sh {} + | sed 's/K/KB/; s/M/MB/
 find . -maxdepth 1 -mindepth 1 ! -name "cli" ! -name "src" ! -name "creates" ! -name "packages" -exec rm -rf {} +
 
 ```
+git clone https://github.com/ratatui/ratatui && cd ratatui && rm -rf .git && cd ..
+git clone https://github.com/google-gemini/gemini-cli && cd gemini-cli && rm -rf .git && cd ..
 git clone https://github.com/mikaelmello/inquire && cd inquire && rm -rf .git && cd ..
 git clone https://github.com/bombshell-dev/clack && cd clack && rm -rf .git && cd ..
 git clone https://github.com/oven-sh/bun && cd bun && rm -rf .git && cd ..
