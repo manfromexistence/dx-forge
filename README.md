@@ -6,6 +6,7 @@ npm install -g @anthropic-ai/claude-code
 
 
 ```
+git clone https://github.com/latipun7/charasay && cd charasay && rm -rf .git && cd ..
 git clone https://github.com/nukesor/comfy-table && cd comfy-table && rm -rf .git && cd ..
 git clone https://github.com/manfromexistence/ui && cd ui && rm -rf .git && cd ..
 git clone https://github.com/neovim/neovim && cd neovim && rm -rf .git && cd ..
