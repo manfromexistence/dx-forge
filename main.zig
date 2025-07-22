@@ -10,14 +10,12 @@ pub fn main() !void {
 
     std.debug.print("Transformer: Scanning directory '{s}' for icon sets...\n", .{data_dir});
 
-    // --- CORRECTED: Use a robust shell command to list files, bypassing the faulty iterator ---
     const result = try std.process.Child.run(.{
         .allocator = allocator,
         .argv = &.{ "ls", data_dir },
     });
     defer allocator.free(result.stdout);
 
-    // Loop over the list of filenames returned by the `ls` command.
     var line_iterator = std.mem.splitScalar(u8, result.stdout, '\n');
     while (line_iterator.next()) |entry_name| {
         if (entry_name.len == 0 or !std.mem.endsWith(u8, entry_name, ".json")) {
@@ -29,8 +27,7 @@ pub fn main() !void {
         
         std.debug.print("  -> Processing: {s}\n", .{file_path});
 
-        // --- THE FIX: Increase the file size limit to 20MB ---
-        const json_data = try std.fs.cwd().readFileAlloc(allocator, file_path, 100 * 1024 * 1024); // 20MB limit
+        const json_data = try std.fs.cwd().readFileAlloc(allocator, file_path, 100 * 1024 * 1024);
         defer allocator.free(json_data);
 
         var json_dom = try std.json.parseFromSlice(std.json.Value, allocator, json_data, .{});
