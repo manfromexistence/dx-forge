@@ -22,6 +22,7 @@ fuzzy = ["fuzzy-matcher"]
 date = []
 editor = []
 chrono = []
+crossterm = ["dep:crossterm"]
 
 [package.metadata.docs.rs]
 all-features = true

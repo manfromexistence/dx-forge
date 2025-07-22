@@ -1,9 +1,5 @@
-fn main() {
-    // This will run the Matrix animation until you press 'q' or Ctrl+C
-    if let Err(e) = cmatrix_rs::run(false, None) { // false = don't use bold
-        eprintln!("Error: {}", e);
-    }
-}
+
+
 // use crossterm::{
 //     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
 //     execute,
