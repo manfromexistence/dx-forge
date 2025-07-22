@@ -6,6 +6,9 @@ npm install -g @anthropic-ai/claude-code
 
 
 ```
+git clone https://github.com/console-rs/indicatif && cd indicatif && rm -rf .git && cd ..
+git clone https://github.com/LinusU/rust-log-update && cd rust-log-update && rm -rf .git && cd ..
+git clone https://github.com/VincentFoulon80/console_engine && cd console_engine && rm -rf .git && cd ..
 git clone https://github.com/latipun7/charasay && cd charasay && rm -rf .git && cd ..
 git clone https://github.com/nukesor/comfy-table && cd comfy-table && rm -rf .git && cd ..
 git clone https://github.com/manfromexistence/ui && cd ui && rm -rf .git && cd ..
