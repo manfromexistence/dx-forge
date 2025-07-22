@@ -66,7 +66,8 @@ ansi_term = "0.12.1"
 
 rayon = "1.8.1"
 comfy-table = "7.1.4"
-
+sl-rs = "0.1.0"
+sl = "0.0.0"
 
 [dev-dependencies]
 rstest = "0.18.2"

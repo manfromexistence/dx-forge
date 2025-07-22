@@ -181,6 +181,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9555578bc9e57714c812a1f84e4fc5b4d21fcb063490c624de019f7464c91268"
 
 [[package]]
+name = "cfg_aliases"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "613afe47fcd5fac7ccf1db93babcb082c5994d996f20b8b159f2ad1658eb5724"
+
+[[package]]
 name = "chrono"
 version = "0.4.41"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -453,6 +459,8 @@ dependencies = [
  "rayon",
  "rstest",
  "similar",
+ "sl",
+ "sl-rs",
  "syntect",
  "tempfile",
  "termion",
@@ -642,6 +650,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c31b6d751ae2c7f11320402d34e41349dd1016f8d5d45e48c4312bc8625af50c"
 dependencies = [
  "byteorder",
+]
+
+[[package]]
+name = "getopts"
+version = "0.2.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cba6ae63eb948698e300f645f87c70f76630d505f23b8907cf1e193ee85048c1"
+dependencies = [
+ "unicode-width 0.2.0",
 ]
 
 [[package]]
@@ -891,6 +908,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "ncurses"
+version = "5.101.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5e2c5d34d72657dc4b638a1c25d40aae81e4f1c699062f72f467237920752032"
+dependencies = [
+ "cc",
+ "libc",
+ "pkg-config",
+]
+
+[[package]]
+name = "nix"
+version = "0.30.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "74523f3a35e05aba87a1d978330aef40f67b0304ac79c1c00b294c9830543db6"
+dependencies = [
+ "bitflags 2.9.1",
+ "cfg-if",
+ "cfg_aliases",
+ "libc",
+]
+
+[[package]]
 name = "noise"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -899,6 +939,17 @@ dependencies = [
  "num-traits",
  "rand",
  "rand_xorshift",
+]
+
+[[package]]
+name = "num-complex"
+version = "0.1.44"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "17cf384bef067563c44d41028840dbecc7f06f2aa5d7881a81dfb0fc7c72f202"
+dependencies = [
+ "autocfg",
+ "num-traits",
+ "rustc-serialize",
 ]
 
 [[package]]
@@ -1251,6 +1302,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "rustc-serialize"
+version = "0.3.25"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fe834bc780604f4674073badbad26d7219cadfb4a2275802db12cbae17498401"
+
+[[package]]
 name = "rustc_version"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1392,6 +1449,59 @@ name = "siphasher"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "56199f7ddabf13fe5074ce809e7d3f42b42ae711800501b5b16ea82ad029c39d"
+
+[[package]]
+name = "sl"
+version = "0.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "711de894d6246658729a6f284edc836862d48d4079c6ef57e2c4f10247328a7e"
+dependencies = [
+ "sl-gx",
+ "sl-la",
+ "sl-mf",
+ "sl-na",
+]
+
+[[package]]
+name = "sl-gx"
+version = "0.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "418cb0be20fe3d63e7faa65c1751ef769b35e8ed520a7f58d4c4d73f6f765ead"
+
+[[package]]
+name = "sl-la"
+version = "0.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "78a9027d5f4598740b9a4d6c31e32b6f46aeb44a383c5b8773dcd4e63f4c88c0"
+
+[[package]]
+name = "sl-mf"
+version = "0.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ce96a5e1299f81e01a963f965a9f47a08c0f3a040157ee770183d5f5129cc73d"
+dependencies = [
+ "num-complex",
+]
+
+[[package]]
+name = "sl-na"
+version = "0.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "17bd0fa00b93bdf712343c7787fa1837ce627bb8e839fad7b0e29681e76a4574"
+dependencies = [
+ "num-complex",
+]
+
+[[package]]
+name = "sl-rs"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "680eccfdf0bd5b02edc775197b5e798931806bfd9f4325a16088df8fd5471773"
+dependencies = [
+ "getopts",
+ "ncurses",
+ "nix",
+]
 
 [[package]]
 name = "slab"
