@@ -2,7 +2,6 @@
 https://github.com/manfromexistence/dx-forge.git
 find . -maxdepth 1 -mindepth 1 -exec du -sh {} + | sed 's/K/KB/; s/M/MB/; s|\./||'
 find . -maxdepth 1 -mindepth 1 ! -name "cli" ! -name "src" ! -name "creates" ! -name "packages" -exec rm -rf {} +
-npm install -g @anthropic-ai/claude-code
 
 
 ```
