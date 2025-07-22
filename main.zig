@@ -10,32 +10,34 @@ pub fn main() !void {
 
     std.debug.print("Transformer: Scanning directory '{s}' for icon sets...\n", .{data_dir});
 
-    var dir = try std.fs.cwd().openDir(data_dir, .{});
-    defer dir.close();
+    // --- CORRECTED: Use a robust shell command to list files, bypassing the faulty iterator ---
+    const result = try std.process.Child.run(.{
+        .allocator = allocator,
+        .argv = &.{ "ls", data_dir },
+    });
+    defer allocator.free(result.stdout);
 
-    var iterator = dir.iterate();
-    while (try iterator.next()) |entry| {
-        if (!std.mem.endsWith(u8, entry.name, ".json")) {
+    // Loop over the list of filenames returned by the `ls` command.
+    var line_iterator = std.mem.splitScalar(u8, result.stdout, '\n');
+    while (line_iterator.next()) |entry_name| {
+        if (entry_name.len == 0 or !std.mem.endsWith(u8, entry_name, ".json")) {
             continue;
         }
 
-        const file_path = try std.fs.path.join(allocator, &.{ data_dir, entry.name });
+        const file_path = try std.fs.path.join(allocator, &.{ data_dir, entry_name });
         defer allocator.free(file_path);
-
+        
         std.debug.print("  -> Processing: {s}\n", .{file_path});
 
-        const json_data = try std.fs.cwd().readFileAlloc(allocator, file_path, 10 * 1024 * 1024); // 10MB limit
+        // --- THE FIX: Increase the file size limit to 20MB ---
+        const json_data = try std.fs.cwd().readFileAlloc(allocator, file_path, 100 * 1024 * 1024); // 20MB limit
         defer allocator.free(json_data);
 
-        // --- CORRECTED: Parse into a generic JSON Value (DOM) first ---
         var json_dom = try std.json.parseFromSlice(std.json.Value, allocator, json_data, .{});
         defer json_dom.deinit();
 
-        // --- 3. Navigate the DOM to find the icon count ---
-        // Get the top-level object.
         const root_object = json_dom.value.object;
 
-        // Get the "icons" object from within the top-level object.
         const icons_value = root_object.get("icons") orelse {
             std.debug.print("  -> WARNING: Skipping file {s}, no 'icons' field found.\n", .{file_path});
             continue;
