@@ -6,12 +6,8 @@
     pkgs.busybox
     pkgs.gcc
     pkgs.neovim
-    pkgs.cargo-cross
-    # No need for pkgs.docker here, it's included by the option below
+    pkgs.mingw-w64
   ];
-
-  # Add this line to start the Docker daemon automatically
-  virtualisation.docker.enable = true;
 
   env = { };
   idx = {
@@ -23,11 +19,25 @@
     ];
     workspace = {
       onCreate = {
-        # It's good practice to wait for the Docker daemon to be ready
-        # However, for a simple build command it should be fine.
-        install = "rustup default stable && rustup update && cargo run";
+        install = ''
+                    echo "Setting up native cross-compilation for Windows..."
+
+                    # 1. Add the rust target for Windows
+                    rustup target add x86_64-pc-windows-gnu
+
+                    # 2. Create the Cargo config file to specify the Windows C linker
+                    mkdir -p .cargo
+                    cat <<EOT > .cargo/config.toml
+          [target.x86_64-pc-windows-gnu]
+          linker = "x86_64-w64-mingw32-gcc"
+          ar = "x86_64-w64-mingw32-ar"
+          EOT
+
+                    echo "Setup complete. You can now build using 'cargo build --target...'"
+        '';
         default.openFiles = [
           "README.md"
+          ".cargo/config.toml"
         ];
       };
     };
