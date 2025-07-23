@@ -13,7 +13,7 @@ use rayon::prelude::*;
 // The main function, which is the entry point of the program.
 // It returns a Result to handle potential I/O errors gracefully.
 fn main() -> io::Result<()> {
-    println!("Jarvis mode activated. Starting high-speed file creation for manfromexistence...");
+    println!("Jarvis mode activated. Engaging hyper-speed protocols for manfromexistence...");
 
     // Define the name of the directory where files will be created.
     let dir_name = "rust_modules";
@@ -32,32 +32,28 @@ fn main() -> io::Result<()> {
     let start_time = Instant::now();
 
     // --- Parallel Execution Phase ---
-    // Create a range from 0 up to num_files (e.g., 0 to 999).
-    // .par_iter() converts this range into a parallel iterator.
-    // Rayon's scheduler will intelligently divide the work among multiple threads.
-    (0..num_files).into_par_iter().for_each(|i| {
-        // This closure will be executed in parallel for each number `i` in the range.
-        
+    // We now use `try_for_each` which is designed for operations that can fail.
+    // It will run the operations in parallel and stop if any of them return an `Err`.
+    // This is more idiomatic and can be more efficient for error handling than a manual match.
+    let result: io::Result<()> = (0..num_files).into_par_iter().try_for_each(|i| {
         // Construct the full path for the new file.
-        // e.g., "rust_modules/file_0.txt", "rust_modules/file_1.txt", etc.
         let path = format!("{}/file_{}.txt", dir_name, i);
-
-        // The file creation and writing logic is wrapped in a function
-        // to handle potential errors for each individual file.
-        // We use a `match` block to handle the Result. If an error occurs,
-        // we print it to the console but don't stop the entire program.
-        match create_and_write_file(&path, content) {
-            Ok(_) => (), // If successful, do nothing.
-            Err(e) => eprintln!("Failed to create file {}: {}", path, e), // If error, print it.
-        }
+        
+        // The file creation and writing function is called directly.
+        // If it returns an Err, `try_for_each` will handle propagating it.
+        create_and_write_file(&path, content)
     });
+
+    // We check the result of the entire parallel operation *after* it completes.
+    // The `?` operator will propagate the first error that occurred, if any.
+    result?;
 
     // --- Completion Phase ---
     // Stop the timer and calculate the elapsed duration.
     let duration = start_time.elapsed();
 
     println!("\nTask complete!");
-    println!("Successfully initiated the creation of {} files.", num_files);
+    println!("Successfully created {} files with enhanced protocols.", num_files);
     println!("Total time taken: {:?}", duration);
 
     // Return Ok to indicate that the main function completed successfully.
@@ -79,14 +75,12 @@ fn create_and_write_file(path: &str, content: &str) -> io::Result<()> {
     // Wrap the file handle in a BufWriter. This creates an in-memory buffer.
     // Writes will go to this buffer first, and the buffer will be "flushed"
     // to the actual file on disk in larger, more efficient chunks.
-    // This significantly reduces the number of slow system calls.
     let mut writer = BufWriter::new(file);
     
     // Write the content to the buffer.
     writer.write_all(content.as_bytes())?;
     
-    // The BufWriter is automatically flushed when it goes out of scope at the
-    // end of this function, ensuring all buffered data is written to the disk.
+    // The BufWriter is automatically flushed when it goes out of scope.
     Ok(())
 }
 
@@ -101,4 +95,3 @@ fn create_and_write_file(path: &str, content: &str) -> io::Result<()> {
 //
 // 5. Replace the content of `src/main.rs` with this code.
 // 6. Run the project from your terminal: `cargo run --release`
-//    (The --release flag enables optimizations, making it even faster!)
