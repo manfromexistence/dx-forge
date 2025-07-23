@@ -1,10 +1,12 @@
 # dx
 https://github.com/manfromexistence/dx-forge.git
+find . -maxdepth 1 -mindepth 1 -type d -exec du -sh {} + | sed 's/K/KB/; s/M/MB/; s|\./||'
 find . -maxdepth 1 -mindepth 1 -exec du -sh {} + | sed 's/K/KB/; s/M/MB/; s|\./||'
 find . -maxdepth 1 -mindepth 1 ! -name "cli" ! -name "src" ! -name "creates" ! -name "packages" -exec rm -rf {} +
 
 # Inspirations
 ```
+git clone https://github.com/biomejs/biome && cd biome && rm -rf .git && cd ..
 git clone https://github.com/console-rs/indicatif && cd indicatif && rm -rf .git && cd ..
 git clone https://github.com/LinusU/rust-log-update && cd rust-log-update && rm -rf .git && cd ..
 git clone https://github.com/VincentFoulon80/console_engine && cd console_engine && rm -rf .git && cd ..
