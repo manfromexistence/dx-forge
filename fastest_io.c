@@ -9,13 +9,16 @@
 #define close CloseHandle
 #define open(path, flags) CreateFileA(path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL)
 #define write(handle, data, len) { DWORD written; WriteFile(handle, data, len, &written, NULL); }
+#define mkdir(path, mode) CreateDirectoryA(path, NULL)
 #else
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #include <pthread.h>
 #define THREAD_T pthread_t
 #define THREAD_CREATE(thread, attr, func, arg) pthread_create(&thread, attr, func, arg)
 #define THREAD_JOIN(thread, status) pthread_join(thread, status)
+#define mkdir(path, mode) mkdir(path, mode)
 #endif
 
 struct ThreadData {
@@ -67,18 +70,20 @@ int main() {
     #ifdef _WIN32
     QueryPerformanceFrequency((LARGE_INTEGER*)&start.tv_sec);
     QueryPerformanceCounter((LARGE_INTEGER*)&start);
+    mkdir("c_modules", 0755); // Create c_modules in current directory
     #else
     clock_gettime(CLOCK_MONOTONIC, &start);
+    mkdir("c_modules", 0755); // Create c_modules in current directory
     #endif
     const char* data = "Hello, manfromexistence";
     size_t dataLen = strlen(data);
-    const char* paths[100]; // Changed to const char* to fix warning
+    const char* paths[100];
     char pathBuffers[100][64];
     for (int i = 0; i < 100; i++) {
         #ifdef _WIN32
-        snprintf(pathBuffers[i], 64, "file_%d.txt", i); // Adjust to RAM disk path
+        snprintf(pathBuffers[i], 64, "c_modules\\file_%d.txt", i);
         #else
-        snprintf(pathBuffers[i], 64, "/file_%d.txt", i); // Use /dev/shm or /tmp
+        snprintf(pathBuffers[i], 64, "c_modules/file_%d.txt", i);
         #endif
         paths[i] = pathBuffers[i];
     }
