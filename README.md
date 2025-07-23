@@ -8,6 +8,7 @@ find . -maxdepth 1 -mindepth 1 ! -name "cli" ! -name "src" ! -name "creates" ! -
 # Inspirations
 ```
 git clone https://github.com/biomejs/biome && cd biome && rm -rf .git && cd ..
+git clone https://github.com/casey/just && cd just && rm -rf .git && cd ..
 git clone https://github.com/console-rs/indicatif && cd indicatif && rm -rf .git && cd ..
 git clone https://github.com/LinusU/rust-log-update && cd rust-log-update && rm -rf .git && cd ..
 git clone https://github.com/VincentFoulon80/console_engine && cd console_engine && rm -rf .git && cd ..
