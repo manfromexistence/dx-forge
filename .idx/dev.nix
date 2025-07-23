@@ -6,6 +6,8 @@
     pkgs.busybox
     pkgs.gcc
     pkgs.neovim
+    pkgs.cargo-cross
+    pkgs.docker
   ];
   env = { };
   idx = {
