@@ -1,6 +1,19 @@
 # dx
 https://github.com/manfromexistence/dx-forge.git
 
+# Set up tmpfs
+sudo mkdir /mnt/tmpfs
+sudo mount -t tmpfs -o size=1G tmpfs /mnt/tmpfs
+cd /mnt/tmpfs
+
+
+cd /dev/shm || cd /tmp
+gcc -O3 -pthread fastest_io.c -o fastest_io
+./fastest_io
+
+gcc -O3 -pthread fast_io.c -o fast_io
+./fast_io
+
 git init && git add . && git commit -m "feat: dx" && git branch -M main && git remote add origin https://github.com/manfromexistence/formatter-and-linter.git && git push -u origin main
 find . -maxdepth 1 -mindepth 1 -type d -exec du -sh {} + | sed 's/K/KB/; s/M/MB/; s|\./||'
 find . -type d -name "tests" -exec rm -r {} +

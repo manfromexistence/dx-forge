@@ -6,6 +6,7 @@
     pkgs.busybox
     pkgs.gcc
     pkgs.neovim
+    pkgs.sudo
   ];
   env = { };
   idx = {
