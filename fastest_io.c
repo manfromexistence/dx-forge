@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -15,6 +16,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <pthread.h>
+#include <sched.h>
 #define THREAD_T pthread_t
 #define THREAD_CREATE(thread, attr, func, arg) pthread_create(&thread, attr, func, arg)
 #define THREAD_JOIN(thread, status) pthread_join(thread, status)
@@ -50,7 +52,7 @@ void* writeFileBatch(void* arg) {
 }
 
 void createAndUpdateFiles(const char** paths, const char* data, size_t dataLen, int n) {
-    #define THREAD_COUNT 8
+    #define THREAD_COUNT 2
     THREAD_T threads[THREAD_COUNT];
     struct ThreadData tds[THREAD_COUNT];
     int filesPerThread = n / THREAD_COUNT + (n % THREAD_COUNT > 0);
@@ -59,6 +61,12 @@ void createAndUpdateFiles(const char** paths, const char* data, size_t dataLen, 
         if (i * filesPerThread + count > n) count = n - i * filesPerThread;
         tds[i] = (struct ThreadData){paths, data, dataLen, i * filesPerThread, count};
         THREAD_CREATE(threads[i], NULL, writeFileBatch, &tds[i]);
+        #ifndef _WIN32
+        cpu_set_t cpuset;
+        CPU_ZERO(&cpuset);
+        CPU_SET(i % THREAD_COUNT, &cpuset);
+        pthread_setaffinity_np(threads[i], sizeof(cpu_set_t), &cpuset);
+        #endif
     }
     for (int i = 0; i < THREAD_COUNT && i * filesPerThread < n; i++) {
         THREAD_JOIN(threads[i], NULL);
@@ -70,10 +78,10 @@ int main() {
     #ifdef _WIN32
     QueryPerformanceFrequency((LARGE_INTEGER*)&start.tv_sec);
     QueryPerformanceCounter((LARGE_INTEGER*)&start);
-    mkdir("c_modules", 0755); // Create c_modules in current directory
+    mkdir("c_modules", 0755);
     #else
     clock_gettime(CLOCK_MONOTONIC, &start);
-    mkdir("c_modules", 0755); // Create c_modules in current directory
+    mkdir("c_modules", 0755);
     #endif
     const char* data = "Hello, manfromexistence";
     size_t dataLen = strlen(data);
@@ -81,9 +89,9 @@ int main() {
     char pathBuffers[100][64];
     for (int i = 0; i < 100; i++) {
         #ifdef _WIN32
-        snprintf(pathBuffers[i], 64, "c_modules\\file_%d.txt", i);
+        snprintf(pathBuffers[i], 64, "c_modules\\f%d.txt", i);
         #else
-        snprintf(pathBuffers[i], 64, "c_modules/file_%d.txt", i);
+        snprintf(pathBuffers[i], 64, "c_modules/f%d.txt", i);
         #endif
         paths[i] = pathBuffers[i];
     }
