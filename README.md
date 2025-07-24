@@ -1,6 +1,8 @@
 # dx
 https://github.com/manfromexistence/dx-forge.git
 
+Good, combine Asynchronous I/O (Advanced) with Combine Operations into a Single Pass to make the rust fastest i/o possible!!!
+
 # Set up tmpfs
 sudo mkdir /mnt/tmpfs
 sudo mount -t tmpfs -o size=1G tmpfs /mnt/tmpfs
