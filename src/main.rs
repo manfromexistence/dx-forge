@@ -9,14 +9,7 @@ use ratatui::{
     style::{Color, Modifier, Style},
     text::{Line, Span, Text},
     widgets::{
-        block::Title,
-        Block,
-        Borders,
-        List,
-        ListItem,
-        ListState,
-        Paragraph,
-        Wrap,
+        block::Title, Block, Borders, List, ListItem, ListState, Paragraph, Wrap,
     },
     Frame, Terminal,
 };
@@ -201,21 +194,26 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
     }
 }
 
-fn ui(f: &mut Frame, app: &mut App) {
+// FIX 1: Add generic <B: Backend> to functions using Frame
+fn ui<B: Backend>(f: &mut Frame<B>, app: &mut App) {
     let current_theme = app.current_theme().clone();
-    
-    f.render_widget(Block::default().style(Style::default().bg(current_theme.background)), f.area());
+
+    f.render_widget(
+        Block::default().style(Style::default().bg(current_theme.background)),
+        f.size(), // Changed from f.area() to f.size() which is the idiomatic way
+    );
 
     let chunks = Layout::default()
         .direction(Direction::Horizontal)
         .constraints([Constraint::Percentage(30), Constraint::Percentage(70)].as_ref())
-        .split(f.area());
+        .split(f.size()); // Changed from f.area() to f.size()
 
     render_theme_list(f, app, chunks[0], &current_theme);
     render_diff_view(f, chunks[1], &current_theme);
 }
 
-fn render_theme_list(f: &mut Frame, app: &mut App, area: Rect, theme: &Theme) {
+// FIX 1: Add generic <B: Backend>
+fn render_theme_list<B: Backend>(f: &mut Frame<B>, app: &mut App, area: Rect, theme: &Theme) {
     let items: Vec<ListItem> = app
         .themes
         .iter()
@@ -243,9 +241,10 @@ fn render_theme_list(f: &mut Frame, app: &mut App, area: Rect, theme: &Theme) {
     f.render_stateful_widget(list, area, &mut app.theme_list_state);
 }
 
-fn render_diff_view(f: &mut Frame, area: Rect, theme: &Theme) {
+// FIX 1: Add generic <B: Backend>
+fn render_diff_view<B: Backend>(f: &mut Frame<B>, area: Rect, theme: &Theme) {
     let diff_text = create_diff_text(OLD_CODE, NEW_CODE, theme);
-    
+
     let paragraph = Paragraph::new(diff_text)
         .wrap(Wrap { trim: false })
         .block(
@@ -257,15 +256,16 @@ fn render_diff_view(f: &mut Frame, area: Rect, theme: &Theme) {
                     Style::default().fg(theme.foreground),
                 ))),
         );
-        
+
     f.render_widget(paragraph, area);
 }
 
 fn create_diff_text<'a>(old: &'a str, new: &'a str, theme: &Theme) -> Text<'a> {
     let ps = SyntaxSet::load_defaults_newlines();
     let ts = ThemeSet::load_defaults();
-    
-    let syntax = ps.find_syntax_by_extension("tsx")
+
+    let syntax = ps
+        .find_syntax_by_extension("tsx")
         .unwrap_or_else(|| ps.find_syntax_plain_text());
 
     let syntect_theme = &ts.themes["base16-ocean.dark"];
@@ -276,8 +276,16 @@ fn create_diff_text<'a>(old: &'a str, new: &'a str, theme: &Theme) -> Text<'a> {
 
     for change in diff.iter_all_changes() {
         let (marker, marker_style, bg_color) = match change.tag() {
-            ChangeTag::Delete => ("-", Style::default().fg(theme.destructive), Some(theme.diff_delete_bg)),
-            ChangeTag::Insert => ("+", Style::default().fg(Color::Green), Some(theme.diff_add_bg)),
+            ChangeTag::Delete => (
+                "-",
+                Style::default().fg(theme.destructive),
+                Some(theme.diff_delete_bg),
+            ),
+            ChangeTag::Insert => (
+                "+",
+                Style::default().fg(Color::Green),
+                Some(theme.diff_add_bg),
+            ),
             ChangeTag::Equal => (" ", Style::default().fg(Color::DarkGray), None),
         };
 
@@ -296,15 +304,17 @@ fn create_diff_text<'a>(old: &'a str, new: &'a str, theme: &Theme) -> Text<'a> {
                         .collect(),
                     Err(_) => vec![Span::raw(line)],
                 };
-                
+
                 let mut line_spans = vec![Span::styled(marker.to_string() + " ", marker_style)];
                 line_spans.extend(spans);
 
                 let mut styled_line = Line::from(line_spans);
+
+                // FIX 2: Use .patch_style() instead of .style() for Line
                 if let Some(bg) = bg_color {
-                    styled_line = styled_line.style(Style::default().bg(bg));
+                    styled_line.patch_style(Style::default().bg(bg));
                 } else {
-                    styled_line = styled_line.style(Style::default().fg(theme.foreground));
+                    styled_line.patch_style(Style::default().fg(theme.foreground));
                 }
                 lines.push(styled_line);
             }
