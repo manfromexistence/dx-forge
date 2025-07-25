@@ -194,25 +194,23 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
     }
 }
 
-// FIX 1: Add generic <B: Backend> to functions using Frame
 fn ui<B: Backend>(f: &mut Frame<B>, app: &mut App) {
     let current_theme = app.current_theme().clone();
 
     f.render_widget(
         Block::default().style(Style::default().bg(current_theme.background)),
-        f.size(), // Changed from f.area() to f.size() which is the idiomatic way
+        f.size(),
     );
 
     let chunks = Layout::default()
         .direction(Direction::Horizontal)
         .constraints([Constraint::Percentage(30), Constraint::Percentage(70)].as_ref())
-        .split(f.size()); // Changed from f.area() to f.size()
+        .split(f.size());
 
     render_theme_list(f, app, chunks[0], &current_theme);
     render_diff_view(f, chunks[1], &current_theme);
 }
 
-// FIX 1: Add generic <B: Backend>
 fn render_theme_list<B: Backend>(f: &mut Frame<B>, app: &mut App, area: Rect, theme: &Theme) {
     let items: Vec<ListItem> = app
         .themes
@@ -241,7 +239,6 @@ fn render_theme_list<B: Backend>(f: &mut Frame<B>, app: &mut App, area: Rect, th
     f.render_stateful_widget(list, area, &mut app.theme_list_state);
 }
 
-// FIX 1: Add generic <B: Backend>
 fn render_diff_view<B: Backend>(f: &mut Frame<B>, area: Rect, theme: &Theme) {
     let diff_text = create_diff_text(OLD_CODE, NEW_CODE, theme);
 
@@ -310,7 +307,6 @@ fn create_diff_text<'a>(old: &'a str, new: &'a str, theme: &Theme) -> Text<'a> {
 
                 let mut styled_line = Line::from(line_spans);
 
-                // FIX 2: Use .patch_style() instead of .style() for Line
                 if let Some(bg) = bg_color {
                     styled_line.patch_style(Style::default().bg(bg));
                 } else {
