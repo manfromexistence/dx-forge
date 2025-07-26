@@ -12,10 +12,9 @@ authors = ["manfromexistence <robinjusticeleague@gmail.com>"]
 keywords = ["friday", "forge", "dx", "dx-css", "dx-auth"]
 rust-version = "1.66.0"
 
-[dependencies]
-lolcrab = "0.4.1"
 
 # [dependencies]
+# lolcrab = "0.4.1"
 # crossterm = "0.29.0"
 # ratatui = "0.22.0"
 # rayon = "1.10.0"

@@ -10,6 +10,8 @@ find . -maxdepth 1 -mindepth 1 ! -name "cli" ! -name "src" ! -name "creates" ! -
 # Inspirations
 ```
 git clone https://github.com/biomejs/biomet && cd biome && rm -rf .git && cd ..
+git clone https://github.com/yuanbohan/rs-figlet && cd rs-figlet && rm -rf .git && cd ..
+git clone https://github.com/mazznoer/lolcrab && cd lolcrab && rm -rf .git && cd ..
 git clone https://github.com/cross-rs/cross && cd cross && rm -rf .git && cd ..
 git clone https://github.com/casey/just && cd just && rm -rf .git && cd ..
 git clone https://github.com/console-rs/indicatif && cd indicatif && rm -rf .git && cd ..
